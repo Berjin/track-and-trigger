@@ -47,7 +47,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
             btn_email_verify.setVisibility(View.INVISIBLE);
             email_verify_text.setVisibility(View.INVISIBLE);
         }
-        if(user.getPhoneNumber()==null){
+        if(user.getPhoneNumber()!=null){
             phoneNo.setVisibility(View.INVISIBLE);
             btn_verify_number.setVisibility(View.INVISIBLE);
         }
