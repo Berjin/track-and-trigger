@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "321944682364",
+    "firebase_url": "https://track-and-trigger-182fc.firebaseio.com",
+    "project_id": "track-and-trigger-182fc",
+    "storage_bucket": "track-and-trigger-182fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:321944682364:android:8e885e932daf139f9f2ef9",
+        "android_client_info": {
+          "package_name": "com.track.trackandtrigger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "321944682364-hvrvk3shptoghlfgf4rbpvdoc83o5rhb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxh359Ux4HrdzrXRtuT6p5y4GLxWTq-sM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "321944682364-hvrvk3shptoghlfgf4rbpvdoc83o5rhb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Track and Trigger</string>
+    <string name="facebook_application_id" translatable="false">374376203910454</string>
+    <string name="fb_login_protocol_scheme" translatable="false">74b291cd9b00f9548817e77d8eb84ec3</string>
+    <string name="you_must_verify_your_email_to_continue">You must verify your Email to continue</string>
+    <string name="verify_email">Verify Email</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="verify_phone_number">Verify Phone Number</string>
+    <string name="login_or_register">Login or Register</string>
 </resources>
