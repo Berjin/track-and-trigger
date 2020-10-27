@@ -50,6 +50,12 @@ public class MainActivity extends AppCompatActivity implements FirebaseAuth.Auth
         if(firebaseAuth.getCurrentUser() == null){
             startLoginActivity();
             return;
+        }else{
+            if(!firebaseAuth.getCurrentUser().isEmailVerified() || firebaseAuth.getCurrentUser().getPhoneNumber()==null){
+                Intent intent = new Intent(this, EmailVerifyActivity.class);
+                startActivity(intent);
+                this.finish();
+            }
         }
         firebaseAuth.getCurrentUser().getIdToken(true)
                 .addOnSuccessListener((getTokenResult)-> Log.d(TAG, "onSuccess: "+getTokenResult.getToken()));

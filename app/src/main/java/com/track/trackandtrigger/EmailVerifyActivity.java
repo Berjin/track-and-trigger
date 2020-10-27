@@ -3,8 +3,10 @@ package com.track.trackandtrigger;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
     Button btn_verify_signout;
     Button btn_verify_number;
     EditText phoneNo;
+    TextView email_verify_text;
     String verificationCodeBySystem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +40,22 @@ public class EmailVerifyActivity extends AppCompatActivity {
         btn_email_verify = findViewById(R.id.btn_email_verify);
         btn_verify_signout = findViewById(R.id.btn_verify_signout);
         btn_verify_number = findViewById(R.id.btn_verify_number);
+        email_verify_text = findViewById(R.id.email_verify_text);
         phoneNo = findViewById(R.id.phoneNo);
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user.isEmailVerified()){
+            btn_email_verify.setVisibility(View.INVISIBLE);
+            email_verify_text.setVisibility(View.INVISIBLE);
+        }
         btn_email_verify.setOnClickListener((view)-> user.sendEmailVerification()
                 .addOnCompleteListener((task)->{
                     findViewById(R.id.btn_email_verify).setEnabled(false);
                     if(task.isSuccessful()){
                         Toast.makeText(this, "Verification Email sent to "+user.getEmail(), Toast.LENGTH_SHORT).show();
+                        AuthUI.getInstance()
+                                .signOut(this);
+                        startActivity(new Intent(this,LoginRegisterActivity.class));
+                        this.finish();
                     }
                     else{
                         Log.d(TAG, "onCreate: "+task.getException());
