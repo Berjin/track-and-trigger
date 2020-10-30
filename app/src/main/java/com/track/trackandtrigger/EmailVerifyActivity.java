@@ -13,10 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
@@ -115,7 +112,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
         firebaseAuth.getCurrentUser().linkWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if(task.isSuccessful()){
-                        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), SplashScreenActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         Toast.makeText(EmailVerifyActivity.this, ""+firebaseAuth.getCurrentUser().getPhoneNumber(), Toast.LENGTH_SHORT).show();

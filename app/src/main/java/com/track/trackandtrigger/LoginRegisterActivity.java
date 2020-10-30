@@ -26,9 +26,9 @@ public class LoginRegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_register);
+        setContentView(R.layout.activity_login);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, SplashScreenActivity.class));
             this.finish();
         }
     }
@@ -39,11 +39,11 @@ public class LoginRegisterActivity extends AppCompatActivity {
                 new AuthUI.IdpConfig.GoogleBuilder().build() // Google builder
         );
 
-        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
+        Intent intent = AuthUI.getInstance().createSignInIntentBuilder().setIsSmartLockEnabled(false)
                 .setAvailableProviders(providers)
                 .setTosAndPrivacyPolicyUrls("https://example.com","https://example.com")
 //                .setLogo(R.drawable.logo)
-                //.setTheme(R.style.LoginTheme)
+                .setTheme(R.style.LoginTheme)
                 .build();
         startActivityForResult(intent,AUTH_REQUEST_CODE);
     }
@@ -63,7 +63,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
                     Toast.makeText(this, "Welcome back", Toast.LENGTH_SHORT).show();
                 }
                 if(user.isEmailVerified()){
-                    Intent intent = new Intent(this, MainActivity.class);
+                    Intent intent = new Intent(this, SplashScreenActivity.class);
                     startActivity(intent);
                     this.finish();
                 }
