@@ -1,15 +1,12 @@
 package com.track.trackandtrigger;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -18,7 +15,6 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +26,7 @@ import io.reactivex.rxjava3.core.Completable;
 
 public class SplashScreenActivity extends AppCompatActivity {
     private static final int LOGIN_REQUEST_CODE = 1702;
+    private static final String TAG = "Splash Screen Activity";
     private List<AuthUI.IdpConfig> providers;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener listener;
@@ -86,13 +83,14 @@ public class SplashScreenActivity extends AppCompatActivity {
                 .build();
         startActivityForResult(
                 AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAuthMethodPickerLayout(authMethodPickerLayout)
-                .setTheme(R.style.LoginTheme)
-                .setAvailableProviders(providers)
-                .setIsSmartLockEnabled(false)
-                .build()
-                ,LOGIN_REQUEST_CODE);
+                        .createSignInIntentBuilder()
+                        .setAuthMethodPickerLayout(authMethodPickerLayout)
+                        .setTheme(R.style.LoginTheme)
+                        .setTosAndPrivacyPolicyUrls("https://example.com", "https://example.com")
+                        .setAvailableProviders(providers)
+                        .setIsSmartLockEnabled(false)
+                        .build()
+                , LOGIN_REQUEST_CODE);
     }
 
     @Override
@@ -102,10 +100,16 @@ public class SplashScreenActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
             if(resultCode == Activity.RESULT_OK){
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            }else {
-                Toast.makeText(this,""+response.getError().getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "YESSSS", Toast.LENGTH_SHORT).show();
             }
-
+            else {
+                if(response==null){
+                    Log.d(TAG,"OnActivityResult: User cancelled sign in");
+                }
+                else{
+                    Log.d(TAG,"OnActivityResult: "+response.getError());
+                }
+            }
         }
     }
     //    Button btn_sign_out;

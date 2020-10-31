@@ -21,8 +21,8 @@
             android:layout_marginBottom="20dp"
             android:background="@android:color/white"
             android:padding="16dp"
-            android:drawableStart="@drawable/fui_ic_mail_white_24dp"
-            android:text="Sign In with Email"
+            android:drawableStart="@drawable/ic_email_24"
+            android:text="@string/sign_in_with_email"
             android:textColor="@android:color/black"/>
         <Button
             android:id="@+id/btn_google_sign_in"
@@ -32,7 +32,7 @@
             android:background="@android:color/white"
             android:padding="16dp"
             android:drawableStart="@drawable/fui_ic_googleg_color_24dp"
-            android:text="Sign In with Google"
+            android:text="@string/sign_in_with_google"
             android:textColor="@android:color/black"/>
         <Button
             android:id="@+id/btn_fb_sign_in"
@@ -42,7 +42,7 @@
             android:background="@android:color/white"
             android:padding="16dp"
             android:drawableStart="@drawable/fui_ic_facebook_white_22dp"
-            android:text="Sign In with Facebook"
+            android:text="@string/sign_in_with_facebook"
             android:textColor="@android:color/black"/>
 
     </LinearLayout>

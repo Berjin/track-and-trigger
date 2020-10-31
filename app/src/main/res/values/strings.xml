@@ -7,4 +7,7 @@
     <string name="sign_out">Sign Out</string>
     <string name="verify_phone_number">Verify Phone Number</string>
     <string name="login_or_register">Login or Register</string>
+    <string name="sign_in_with_google">Sign In with Google</string>
+    <string name="sign_in_with_email">Sign In with Email</string>
+    <string name="sign_in_with_facebook">Sign In with Facebook</string>
 </resources>
