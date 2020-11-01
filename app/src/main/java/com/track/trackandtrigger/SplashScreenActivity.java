@@ -1,20 +1,35 @@
 package com.track.trackandtrigger;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.track.trackandtrigger.Modal.UserInfoModel;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,6 +45,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     private List<AuthUI.IdpConfig> providers;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener listener;
+
+    private FirebaseDatabase database;
+    private DatabaseReference userInfoRef;
 
     @Override
     protected void onStart() {
@@ -59,6 +77,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void init() {
+
+        database = FirebaseDatabase.getInstance();
+        userInfoRef = database.getReference(Common.USER_INFO_REFERENCE);
         providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
@@ -68,11 +89,91 @@ public class SplashScreenActivity extends AppCompatActivity {
         listener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if(user != null){
-                Toast.makeText(this,"Welcome: "+user.getUid(),Toast.LENGTH_SHORT).show();
+                checkUserInFirebase();
             }else{
                 showLoginLayout();
             }
         };
+    }
+
+    private void checkUserInFirebase() {
+        userInfoRef
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            Toast.makeText(SplashScreenActivity.this, "User already registered", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            showRegisterLayout();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(SplashScreenActivity.this, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void showRegisterLayout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.DialogTheme);
+        View itemView = LayoutInflater.from(this).inflate(R.layout.activity_register,null);
+        TextInputEditText edit_first_name = itemView.findViewById(R.id.first_name);
+        TextInputEditText edit_last_name = itemView.findViewById(R.id.last_name);
+        TextInputEditText edit_phone_number = itemView.findViewById(R.id.edit_phone_number);
+        TextInputEditText edit_user_name = itemView.findViewById(R.id.edit_user_name);
+        TextInputEditText edit_profession = itemView.findViewById(R.id.edit_profession);
+
+        Button btn_continue = itemView.findViewById(R.id.btn_register);
+
+        //SetData
+        if(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()!=null && !TextUtils.isDigitsOnly(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())){
+            edit_phone_number.setText(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber());
+        }
+        //View
+        builder.setView(itemView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        //Event
+        btn_continue.setOnClickListener(v -> {
+            if(TextUtils.isDigitsOnly(edit_first_name.getText().toString())){
+                Toast.makeText(this, "Please enter first name", Toast.LENGTH_SHORT).show();
+            }
+            else if(TextUtils.isDigitsOnly(edit_last_name.getText().toString())){
+                Toast.makeText(this, "Please enter last name", Toast.LENGTH_SHORT).show();
+            }
+            else if(TextUtils.isDigitsOnly(edit_phone_number.getText().toString())){
+                Toast.makeText(this, "Please enter Phone number", Toast.LENGTH_SHORT).show();
+            }
+            else if(TextUtils.isDigitsOnly(edit_user_name.getText().toString())){
+                Toast.makeText(this, "Please enter Username", Toast.LENGTH_SHORT).show();
+            }
+            else if(TextUtils.isDigitsOnly(edit_profession.getText().toString())){
+                Toast.makeText(this, "Please enter Profession", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                UserInfoModel model = new UserInfoModel();
+                model.firstName = edit_first_name.getText().toString();
+                model.lastName = edit_last_name.getText().toString();
+                model.phoneNumber = edit_phone_number.getText().toString();
+                model.userName = edit_user_name.getText().toString();
+                model.profession = edit_profession.getText().toString();
+
+                userInfoRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .setValue(model)
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        })
+                        .addOnSuccessListener((e)->{
+                            Toast.makeText(this, "Registration Successful", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        });
+            }
+
+        });
     }
 
     private void showLoginLayout() {
@@ -100,7 +201,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
             if(resultCode == Activity.RESULT_OK){
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Toast.makeText(this, "YESSSS", Toast.LENGTH_SHORT).show();
             }
             else {
                 if(response==null){
@@ -112,19 +212,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }
     }
-    //    Button btn_sign_out;
-//    private static final String TAG = "MainActivity";
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        btn_sign_out = findViewById(R.id.btn_sign_out);
-//        btn_sign_out.setEnabled(true);
-//        btn_sign_out.setOnClickListener((view)-> AuthUI.getInstance()
-//                .signOut(SplashScreenActivity.this));
-//    }
-//
 //    private void startLoginActivity() {
 //        Intent intent = new Intent(this,LoginRegisterActivity.class);
 //        startActivity(intent);
