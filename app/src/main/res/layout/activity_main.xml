@@ -6,15 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".SplashScreenActivity">
 
-    <Button
-        android:id="@+id/btn_sign_out"
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="149dp"
-        android:layout_marginTop="317dp"
-        android:layout_marginEnd="174dp"
-        android:layout_marginBottom="366dp"
-        android:text="@string/sign_out"
+        android:layout_marginStart="165dp"
+        android:layout_marginTop="356dp"
+        android:layout_marginEnd="166dp"
+        android:layout_marginBottom="356dp"
+        android:text="This is Main Activity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

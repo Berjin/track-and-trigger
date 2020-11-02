@@ -13,14 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -103,7 +101,14 @@ public class SplashScreenActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
-                            Toast.makeText(SplashScreenActivity.this, "User already registered", Toast.LENGTH_SHORT).show();
+                            UserInfoModel model = snapshot.getValue(UserInfoModel.class);
+//                            Toast.makeText(SplashScreenActivity.this, "User already registered", Toast.LENGTH_SHORT).show();
+                            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            if (user.isEmailVerified()) {
+                                goToHomeActivity(model);
+                            } else {
+                                verifyEmail();
+                            }
                         }
                         else {
                             showRegisterLayout();
@@ -116,9 +121,15 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void goToHomeActivity(UserInfoModel model) {
+        Common.currentUser = model;
+        startActivity(new Intent(this,MainActivity.class));
+        finish();
+    }
 
     private void showRegisterLayout() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.DialogTheme);
+        builder.setCancelable(false);
         View itemView = LayoutInflater.from(this).inflate(R.layout.activity_register,null);
         TextInputEditText edit_first_name = itemView.findViewById(R.id.first_name);
         TextInputEditText edit_last_name = itemView.findViewById(R.id.last_name);
@@ -170,11 +181,27 @@ public class SplashScreenActivity extends AppCompatActivity {
                         .addOnSuccessListener((e)->{
                             Toast.makeText(this, "Registration Successful", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
+                            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            if (user.isEmailVerified()) {
+                                Toast.makeText(this, "Your email is verified", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(this,MainActivity.class));
+                                finish();
+                            } else {
+                                verifyEmail();
+                            }
+
                         });
             }
 
         });
     }
+
+    private void verifyEmail() {
+        Intent intent = new Intent(this, EmailVerifyActivity.class);
+        startActivity(intent);
+        this.finish();
+    }
+
 
     private void showLoginLayout() {
         AuthMethodPickerLayout authMethodPickerLayout = new AuthMethodPickerLayout.Builder(R.layout.activity_login)
@@ -212,39 +239,4 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }
     }
-//    private void startLoginActivity() {
-//        Intent intent = new Intent(this,LoginRegisterActivity.class);
-//        startActivity(intent);
-//        this.finish();
-//    }
-//
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        FirebaseAuth.getInstance().addAuthStateListener(this);
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        FirebaseAuth.getInstance().removeAuthStateListener(this);
-//    }
-//
-//    @Override
-//    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//        if(firebaseAuth.getCurrentUser() == null){
-//            startLoginActivity();
-//            return;
-//        }else{
-//            if(!firebaseAuth.getCurrentUser().isEmailVerified() || firebaseAuth.getCurrentUser().getPhoneNumber()==null){
-//                Intent intent = new Intent(this, EmailVerifyActivity.class);
-//                startActivity(intent);
-//                this.finish();
-//            }
-//        }
-//        firebaseAuth.getCurrentUser().getIdToken(true)
-//                .addOnSuccessListener((getTokenResult)-> Log.d(TAG, "onSuccess: "+getTokenResult.getToken()));
-//    }
-
-
 }
