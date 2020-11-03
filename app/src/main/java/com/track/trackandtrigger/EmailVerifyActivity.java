@@ -92,7 +92,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
 
     //Send verification code
     private void sendVerificationEmail(String email, int code) {
-        // 
+        //
         Toast.makeText(this, "An email with code  will be send to "+email, Toast.LENGTH_SHORT).show();
         sender=new GMailSender(user,password);
 
