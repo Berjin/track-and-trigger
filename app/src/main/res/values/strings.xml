@@ -10,4 +10,6 @@
     <string name="sign_in_with_email">Sign In with Email</string>
     <string name="sign_in_with_facebook">Sign In with Facebook</string>
     <string name="continue_text">Continue</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
