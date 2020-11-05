@@ -47,6 +47,8 @@ dependencies {
     implementation files('libs/activation.jar')
     implementation files('libs/mail.jar')
     implementation files('libs/additional.jar')
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

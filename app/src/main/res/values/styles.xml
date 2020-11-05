@@ -10,6 +10,11 @@
         <item name="android:windowFullscreen">true</item>
 <!--        <item name="android:windowBackground"></item>-->
     </style>
+    <style name="MainTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
     <style name="LoginTheme" parent="FirebaseUI">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

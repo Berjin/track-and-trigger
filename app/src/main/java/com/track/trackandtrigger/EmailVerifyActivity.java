@@ -1,5 +1,6 @@
 package com.track.trackandtrigger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,10 +8,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -22,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.Random;
 
 import static java.lang.Integer.parseInt;
@@ -37,6 +43,9 @@ public class EmailVerifyActivity extends AppCompatActivity {
     String password = "fcttlzfnbtlhlxuk";
     String email;
     int code;
+
+    private FirebaseDatabase database;
+    private DatabaseReference userInfoRef;
 
 
     GMailSender sender;
@@ -76,6 +85,15 @@ public class EmailVerifyActivity extends AppCompatActivity {
             if(parseInt(edit_verification_code.getText().toString())==code)
                     {
                         Toast.makeText(this, "Verified", Toast.LENGTH_SHORT).show();
+                        HashMap hashMap = new HashMap();
+                        hashMap.put("isEmailVerified",true);
+                        database = FirebaseDatabase.getInstance();
+                        userInfoRef = database.getReference(Common.USER_INFO_REFERENCE);
+                        String uid = user.getUid();
+                        userInfoRef.child(uid).updateChildren(hashMap).addOnSuccessListener(o -> {
+                            startActivity(new Intent(this,MainActivity.class));
+                            finish();
+                        });
                     }
                     else{
                 Toast.makeText(this, "not verified", Toast.LENGTH_SHORT).show();
@@ -121,7 +139,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
             try {
 
                 // Add subject, Body, your mail Id, and receiver mail Id.
-                sender.sendMail("OTP for registration", String.valueOf(code), "trackntrigger@gmail.com", email);
+                sender.sendMail("OTP for registration", "OTP for registration is "+ code, "trackntrigger@gmail.com", email);
                 Log.d("send", "done");
             } catch (Exception ex) {
                 Log.d("exceptionsending", ex.toString());

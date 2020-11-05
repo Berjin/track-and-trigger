@@ -6,4 +6,5 @@ public class UserInfoModel {
     public String userName = "";
     public String phoneNumber = "";
     public String profession = "";
+    public boolean isEmailVerified = false;
 }

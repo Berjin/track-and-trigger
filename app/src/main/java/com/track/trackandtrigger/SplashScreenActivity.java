@@ -102,9 +102,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
                             UserInfoModel model = snapshot.getValue(UserInfoModel.class);
-//                            Toast.makeText(SplashScreenActivity.this, "User already registered", Toast.LENGTH_SHORT).show();
-                            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            if (user.isEmailVerified()) {
+                            if (model.isEmailVerified) {
                                 goToHomeActivity(model);
                             } else {
                                 verifyEmail();
@@ -171,8 +169,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 model.phoneNumber = edit_phone_number.getText().toString();
                 model.userName = edit_user_name.getText().toString();
                 model.profession = edit_profession.getText().toString();
-
-                userInfoRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                userInfoRef.child(uid)
                         .setValue(model)
                         .addOnFailureListener(e -> {
                             Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -181,10 +179,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                         .addOnSuccessListener((e)->{
                             Toast.makeText(this, "Registration Successful", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
-                            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            if (user.isEmailVerified()) {
+                            //TODO change to db email verify variable
+                            if (model.isEmailVerified) {
                                 Toast.makeText(this, "Your email is verified", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(this,MainActivity.class));
+                                Intent intent = new Intent(this,MainActivity.class);
+                                startActivity(intent);
                                 finish();
                             } else {
                                 verifyEmail();
