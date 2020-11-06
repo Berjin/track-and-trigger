@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -71,7 +72,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
 
         //Send a verification email when clicking this button
         btn_send_verification_email.setOnClickListener((view)->{
-             code =new Random().nextInt(900000) + 100000; ;
+             code =new Random().nextInt(900000) + 100000;
             sendVerificationEmail(email,code);
 
             btn_send_verification_email.setVisibility(View.INVISIBLE);
@@ -154,7 +155,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
             super.onPostExecute(result);
             pDialog.cancel();
 
-            Toast.makeText(EmailVerifyActivity.this, "mail send", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EmailVerifyActivity.this, "Email has been sent", Toast.LENGTH_SHORT).show();
 
 
         }

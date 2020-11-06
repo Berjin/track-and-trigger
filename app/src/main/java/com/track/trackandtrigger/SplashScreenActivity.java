@@ -179,7 +179,6 @@ public class SplashScreenActivity extends AppCompatActivity {
                         .addOnSuccessListener((e)->{
                             Toast.makeText(this, "Registration Successful", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
-                            //TODO change to db email verify variable
                             if (model.isEmailVerified) {
                                 Toast.makeText(this, "Your email is verified", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(this,MainActivity.class);

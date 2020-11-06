@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Track and Trigger</string>
+    <string name="facebook_application_id" translatable="false">374376203910454</string>
+    <string name="fb_login_protocol_scheme" translatable="false">74b291cd9b00f9548817e77d8eb84ec3</string>
+    <string name="verify_email">Verify Email</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="verify_phone_number">Verify Phone Number</string>
+    <string name="login_or_register">Login or Register</string>
+    <string name="sign_in_with_google">Sign In with Google</string>
+    <string name="sign_in_with_email">Sign In with Email</string>
+    <string name="sign_in_with_facebook">Sign In with Facebook</string>
+    <string name="continue_text">Continue</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
