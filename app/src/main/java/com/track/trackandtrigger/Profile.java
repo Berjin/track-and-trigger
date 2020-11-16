@@ -1,6 +1,7 @@
 package com.track.trackandtrigger;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -103,7 +104,10 @@ public class Profile extends Fragment {
             Toast.makeText(getActivity(), "Settings", Toast.LENGTH_SHORT).show();
         });
         help.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "Help", Toast.LENGTH_SHORT).show();
+            String url = "https://example.com";
+            Intent urlIntent = new Intent(Intent.ACTION_VIEW);
+            urlIntent.setData(Uri.parse(url));
+            startActivity(urlIntent);
         });
         // Inflate the layout for this fragment
         return profileInflater;
