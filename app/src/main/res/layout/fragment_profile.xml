@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".Profile">
     <LinearLayout
-        android:id="@+id/linear_layout_1"
+        android:id="@+id/bg-layout"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:background="@color/colorPrimary"
         android:orientation="horizontal" />
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_dp"
+        android:id="@+id/profile_pic"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:src="@drawable/ic_acount"
@@ -19,33 +19,35 @@
         android:layout_marginTop="60dp"
         />
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/profile_dp"
+        android:layout_below="@id/profile_pic"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:text="Rishab Sapkal"
+        tools:text="Example"
         android:textColor="@color/colorWhite"
         android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/txt_email"
+        android:id="@+id/email_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/name_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:textColor="@color/colorWhite"
-        android:text="rishab@gmail.com" />
+        tools:text="example@example.com" />
     <LinearLayout
-        android:id="@+id/linear_layout_2"
+        android:id="@+id/personal_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/txt_email"
+        android:layout_below="@+id/email_text"
         android:layout_marginTop="100dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         >
     <ImageView
         android:layout_width="36dp"
@@ -58,18 +60,20 @@
         android:layout_height="wrap_content"
         android:text="Personal Info"
         android:textSize="18sp"
-        android:textColor="#000"
+        android:textColor="@color/bg_color"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         />
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/linear_layout_3"
+        android:id="@+id/share_app"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/linear_layout_2"
-        android:layout_marginTop="30dp"
+        android:layout_below="@+id/personal_info"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         >
     <ImageView
         android:layout_width="36dp"
@@ -82,7 +86,7 @@
         android:layout_height="wrap_content"
         android:text="Share"
         android:textSize="18sp"
-        android:textColor="#000"
+        android:textColor="@color/bg_color"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         />
@@ -90,12 +94,14 @@
 
 
     <LinearLayout
-        android:id="@+id/linear_layout_4"
+        android:id="@+id/settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/linear_layout_3"
-        android:layout_marginTop="30dp"
+        android:layout_below="@+id/share_app"
+        android:layout_marginTop="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
         >
         <ImageView
             android:layout_width="36dp"
@@ -108,63 +114,49 @@
             android:layout_height="wrap_content"
             android:text="Settings"
             android:textSize="18sp"
-            android:textColor="#000"
+            android:textColor="@color/bg_color"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             />
 
     </LinearLayout>
+
     <LinearLayout
-        android:id="@+id/linear_layout_5"
+        android:id="@+id/help"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/settings"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
-        android:layout_below="@+id/linear_layout_4"
-        android:layout_marginTop="30dp"
-        >
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@drawable/ic_help"
             android:layout_marginStart="70dp"
-            />
+            android:src="@drawable/ic_help" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
             android:text="Help and Support"
-            android:textSize="18sp"
-            android:textColor="#000"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            />
+            android:textColor="@color/bg_color"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linear_layout_logout"
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
         android:gravity="center"
-        >
-        <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_logout"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:textSize="18sp"
-            android:textColor="#000"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            />
-    </LinearLayout>
+        android:text="Sign out" />
 
 </RelativeLayout>
 
