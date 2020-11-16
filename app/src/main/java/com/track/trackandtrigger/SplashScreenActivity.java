@@ -126,7 +126,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void showRegisterLayout() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.DialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.MainTheme);
         builder.setCancelable(false);
         View itemView = LayoutInflater.from(this).inflate(R.layout.activity_register,null);
         TextInputEditText edit_first_name = itemView.findViewById(R.id.first_name);

@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EmailVerifyActivity" />
+        <activity android:name=".EmailVerifyActivity" android:theme="@style/MainTheme"/>
         <activity android:name=".MainActivity" android:theme="@style/MainTheme" />
         <activity
             android:name=".SplashScreenActivity"

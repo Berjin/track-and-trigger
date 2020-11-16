@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/MainTheme"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white">
     <LinearLayout
@@ -99,6 +100,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         android:textSize="32sp"
-        android:background="@android:color/holo_blue_light"
+        android:textColor="@color/colorWhite"
+        android:background="@color/colorPrimary"
         android:text="@string/continue_text"/>
 </RelativeLayout>

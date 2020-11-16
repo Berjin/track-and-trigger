@@ -94,9 +94,11 @@ public class Profile extends Fragment {
         sign_out = profileInflater.findViewById(R.id.sign_out_btn);
         email_text.setText(user.getEmail());
         name_text.setText(user.getDisplayName());
-        Glide.with(this)
-                .load(user.getPhotoUrl())
-                .into(profile_dp);
+        if(user.getPhotoUrl()!=null) {
+            Glide.with(this)
+                    .load(user.getPhotoUrl())
+                    .into(profile_dp);
+        }
         personal_info.setOnClickListener(v -> {
             Toast.makeText(getActivity(), "Profile", Toast.LENGTH_SHORT).show();
         });

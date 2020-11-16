@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Send Verification Email"
-            android:background="@android:color/holo_blue_light"
+            android:paddingHorizontal="5dp"
             android:layout_gravity="center_horizontal"/>
     </LinearLayout>
     <Button
@@ -49,6 +49,5 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         android:textSize="32sp"
-        android:background="@android:color/holo_blue_light"
         android:text="Verify email"/>
 </RelativeLayout>

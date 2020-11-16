@@ -2,6 +2,7 @@ package com.track.trackandtrigger;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -65,6 +66,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
         verify_code_layout = findViewById(R.id.verify_code_layout);
         edit_verification_code.setVisibility(View.INVISIBLE);
         verify_code_layout.setVisibility(View.INVISIBLE);
+        btn_email_verify.setVisibility(View.INVISIBLE);
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -78,27 +80,30 @@ public class EmailVerifyActivity extends AppCompatActivity {
             btn_send_verification_email.setVisibility(View.INVISIBLE);
             verify_code_layout.setVisibility(View.VISIBLE);
             edit_verification_code.setVisibility(View.VISIBLE);
+            btn_email_verify.setVisibility(View.VISIBLE);
         });
 
         // verify the code typed by user with the one which we send
         btn_email_verify.setOnClickListener((view)-> {
-
-            if(parseInt(edit_verification_code.getText().toString())==code)
-                    {
-                        Toast.makeText(this, "Verified", Toast.LENGTH_SHORT).show();
-                        HashMap hashMap = new HashMap();
-                        hashMap.put("isEmailVerified",true);
-                        database = FirebaseDatabase.getInstance();
-                        userInfoRef = database.getReference(Common.USER_INFO_REFERENCE);
-                        String uid = user.getUid();
-                        userInfoRef.child(uid).updateChildren(hashMap).addOnSuccessListener(o -> {
-                            startActivity(new Intent(this,MainActivity.class));
-                            finish();
-                        });
+                    if(TextUtils.isEmpty(edit_verification_code.getText().toString())){
+                        Toast.makeText(this, "Please enter verification code", Toast.LENGTH_SHORT).show();
                     }
-                    else{
-                Toast.makeText(this, "not verified", Toast.LENGTH_SHORT).show();
-            }
+                    else {
+                        if (parseInt(edit_verification_code.getText().toString()) == code) {
+                            Toast.makeText(this, "Verified", Toast.LENGTH_SHORT).show();
+                            HashMap hashMap = new HashMap();
+                            hashMap.put("isEmailVerified", true);
+                            database = FirebaseDatabase.getInstance();
+                            userInfoRef = database.getReference(Common.USER_INFO_REFERENCE);
+                            String uid = user.getUid();
+                            userInfoRef.child(uid).updateChildren(hashMap).addOnSuccessListener(o -> {
+                                startActivity(new Intent(this, MainActivity.class));
+                                finish();
+                            });
+                        } else {
+                            Toast.makeText(this, "not verified", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
 
         });
@@ -140,7 +145,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
             try {
 
                 // Add subject, Body, your mail Id, and receiver mail Id.
-                sender.sendMail("OTP for registration", "OTP for registration is "+ code, "trackntrigger@gmail.com", email);
+                sender.sendMail("Please verify your email", "To verify your email address, please use the following One Time Password(OTP):\n"+ code, "trackntrigger@gmail.com", email);
                 Log.d("send", "done");
             } catch (Exception ex) {
                 Log.d("exceptionsending", ex.toString());
