@@ -1,65 +1,47 @@
 package com.track.trackandtrigger;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-import com.firebase.ui.auth.AuthUI;
-import com.google.firebase.auth.FirebaseAuth;
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
-
-public class MainActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener {
-    Button btn_sign_out;
-    private static final String TAG = "MainActivity";
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btn_sign_out = findViewById(R.id.btn_sign_out);
-        btn_sign_out.setEnabled(true);
-        btn_sign_out.setOnClickListener((view)-> AuthUI.getInstance()
-                .signOut(MainActivity.this));
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.home);
     }
-
-    private void startLoginActivity() {
-        Intent intent = new Intent(this,LoginRegisterActivity.class);
-        startActivity(intent);
-        this.finish();
-    }
-
+    Home homeFragment = new Home();
+    Diary diaryFragment = new Diary();
+    Reminders remindersFragment = new Reminders();
+    Profile profileFragment = new Profile();
     @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseAuth.getInstance().addAuthStateListener(this);
-    }
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.home:
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out).replace(R.id.container,homeFragment).commit();
+                return true;
+            case R.id.diary:
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out).replace(R.id.container,diaryFragment).commit();
+                return true;
+            case R.id.reminder:
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out).replace(R.id.container,remindersFragment).commit();
+                return true;
+            case R.id.profile:
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in,R.anim.fade_out).replace(R.id.container,profileFragment).commit();
+                return true;
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        FirebaseAuth.getInstance().removeAuthStateListener(this);
-    }
-
-    @Override
-    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        if(firebaseAuth.getCurrentUser() == null){
-            startLoginActivity();
-            return;
-        }else{
-            if(!firebaseAuth.getCurrentUser().isEmailVerified() || firebaseAuth.getCurrentUser().getPhoneNumber()==null){
-                Intent intent = new Intent(this, EmailVerifyActivity.class);
-                startActivity(intent);
-                this.finish();
-            }
         }
-        firebaseAuth.getCurrentUser().getIdToken(true)
-                .addOnSuccessListener((getTokenResult)-> Log.d(TAG, "onSuccess: "+getTokenResult.getToken()));
+        return false;
     }
-
-
 }
