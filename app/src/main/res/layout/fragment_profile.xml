@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:text="Personal Info"
         android:textSize="18sp"
-        android:textColor="@color/bg_color"
+        android:textColor="@color/text_color"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         />
@@ -86,7 +86,7 @@
         android:layout_height="wrap_content"
         android:text="Share"
         android:textSize="18sp"
-        android:textColor="@color/bg_color"
+        android:textColor="@color/text_color"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         />
@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:text="Settings"
             android:textSize="18sp"
-            android:textColor="@color/bg_color"
+            android:textColor="@color/text_color"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             />
@@ -144,7 +144,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="20dp"
             android:text="Help and Support"
-            android:textColor="@color/bg_color"
+            android:textColor="@color/text_color"
             android:textSize="18sp" />
 
     </LinearLayout>
