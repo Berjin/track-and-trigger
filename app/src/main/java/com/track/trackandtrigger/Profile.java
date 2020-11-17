@@ -123,6 +123,7 @@ public class Profile extends Fragment {
                     .signOut(getActivity())
                     .addOnCompleteListener(task -> {
                         startActivity(new Intent(getActivity(),SplashScreenActivity.class));
+                        getActivity().finish();
                     });
         });
         // Inflate the layout for this fragment

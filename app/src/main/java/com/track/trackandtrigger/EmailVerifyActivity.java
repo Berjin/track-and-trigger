@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,17 +16,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -97,8 +88,13 @@ public class EmailVerifyActivity extends AppCompatActivity {
                             userInfoRef = database.getReference(Common.USER_INFO_REFERENCE);
                             String uid = user.getUid();
                             userInfoRef.child(uid).updateChildren(hashMap).addOnSuccessListener(o -> {
-                                startActivity(new Intent(this, MainActivity.class));
-                                finish();
+                                if(TextUtils.isEmpty(user.getPhoneNumber())){
+                                    startActivity(new Intent(this, PhoneVerifyActivity.class));
+                                    finish();
+                                } else {
+                                    startActivity(new Intent(this, MainActivity.class));
+                                    finish();
+                                }
                             });
                         } else {
                             Toast.makeText(this, "not verified", Toast.LENGTH_SHORT).show();
@@ -107,10 +103,6 @@ public class EmailVerifyActivity extends AppCompatActivity {
 
 
         });
-//        if(user.getPhoneNumber()!=null){
-//            phoneNo.setVisibility(View.INVISIBLE);
-//            btn_verify_number.setVisibility(View.INVISIBLE);
-//        }
 
     }
 
@@ -165,58 +157,4 @@ public class EmailVerifyActivity extends AppCompatActivity {
 
         }
     }
-
-
-
-
-
-//    private void sendVerificationCode() {
-//        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-//                phoneNo.getText().toString(),
-//                60,
-//                TimeUnit.SECONDS,
-//                this,
-//                mCallbacks);
-//    }
-//    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-//        @Override
-//        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-//            super.onCodeSent(s, forceResendingToken);
-//            verificationCodeBySystem =s;
-//        }
-//
-//        @Override
-//        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-//            String code = phoneAuthCredential.getSmsCode();
-//            if(code!=null){
-//                verifyCode(code);
-//            }
-//        }
-//
-//        @Override
-//        public void onVerificationFailed(@NonNull FirebaseException e) {
-//            Toast.makeText(EmailVerifyActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-//        }
-//    };
-//
-//    private void verifyCode(String codeByUser) {
-//        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationCodeBySystem,codeByUser);
-//        signInTheUserByCredentials(credential);
-//    }
-//
-//    private void signInTheUserByCredentials(PhoneAuthCredential credential) {
-//        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-//        firebaseAuth.getCurrentUser().linkWithCredential(credential)
-//                .addOnCompleteListener(this, task -> {
-//                    if(task.isSuccessful()){
-//                        Intent intent = new Intent(getApplicationContext(), SplashScreenActivity.class);
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        startActivity(intent);
-//                        Toast.makeText(EmailVerifyActivity.this, ""+firebaseAuth.getCurrentUser().getPhoneNumber(), Toast.LENGTH_SHORT).show();
-//                    }
-//                    else{
-//                        Toast.makeText(EmailVerifyActivity.this, ""+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//    }
 }

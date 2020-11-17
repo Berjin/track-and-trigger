@@ -43,6 +43,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private List<AuthUI.IdpConfig> providers;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener listener;
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     private FirebaseDatabase database;
     private DatabaseReference userInfoRef;
@@ -103,7 +104,12 @@ public class SplashScreenActivity extends AppCompatActivity {
                         if(snapshot.exists()){
                             UserInfoModel model = snapshot.getValue(UserInfoModel.class);
                             if (model.isEmailVerified) {
-                                goToHomeActivity(model);
+                                if(TextUtils.isEmpty(user.getPhoneNumber())){
+                                    startActivity(new Intent(getApplicationContext(), PhoneVerifyActivity.class));
+                                    finish();
+                                } else {
+                                    goToHomeActivity(model);
+                                }
                             } else {
                                 verifyEmail();
                             }
