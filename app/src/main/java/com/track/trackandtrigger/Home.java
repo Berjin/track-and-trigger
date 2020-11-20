@@ -1,5 +1,6 @@
 package com.track.trackandtrigger;
 
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -60,6 +61,7 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View homeInflater = inflater.inflate(R.layout.fragment_home, container, false);
+//        email_text = profileInflater.findViewById(R.id.email_text);
         return homeInflater;
     }
 }

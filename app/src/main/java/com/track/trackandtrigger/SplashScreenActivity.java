@@ -7,19 +7,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
 
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -96,6 +101,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void checkUserInFirebase() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
         userInfoRef
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -136,12 +142,29 @@ public class SplashScreenActivity extends AppCompatActivity {
         builder.setCancelable(false);
         View itemView = LayoutInflater.from(this).inflate(R.layout.activity_register,null);
         TextInputEditText edit_first_name = itemView.findViewById(R.id.first_name);
+        TextInputLayout firstNameLayout = itemView.findViewById(R.id.first_name_layout);
         TextInputEditText edit_last_name = itemView.findViewById(R.id.last_name);
-        TextInputEditText edit_phone_number = itemView.findViewById(R.id.edit_phone_number);
+        TextInputLayout lastNameLayout = itemView.findViewById(R.id.last_name_layout);
         TextInputEditText edit_user_name = itemView.findViewById(R.id.edit_user_name);
-        TextInputEditText edit_profession = itemView.findViewById(R.id.edit_profession);
-
+        TextInputLayout usernameLayout = itemView.findViewById(R.id.username_layout);
+        TextInputEditText edit_phone_number = itemView.findViewById(R.id.edit_phone_number);
+        TextInputLayout phoneNumberLayout = itemView.findViewById(R.id.phone_number_layout);
+        AutoCompleteTextView edit_profession = itemView.findViewById(R.id.edit_profession);
+        TextInputLayout textInputLayout = itemView.findViewById(R.id.text_input_layout);
+        String[] items = new String[]{
+          "Student",
+          "Home Maker",
+          "Teacher",
+          "Others"
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                SplashScreenActivity.this,
+                R.layout.dropdown_profession,
+                items
+        );
+        edit_profession.setAdapter(adapter);
         Button btn_continue = itemView.findViewById(R.id.btn_register);
+        Button btn_sign_out = itemView.findViewById(R.id.btn_sign_out);
 
         //SetData
         if(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber()!=null && !TextUtils.isDigitsOnly(FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber())){
@@ -152,29 +175,58 @@ public class SplashScreenActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
         //Event
+        btn_sign_out.setOnClickListener(v -> {
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(task -> {
+                        startActivity(new Intent(this,SplashScreenActivity.class));
+                        this.finish();
+                    });
+        });
         btn_continue.setOnClickListener(v -> {
-            if(TextUtils.isDigitsOnly(edit_first_name.getText().toString())){
-                Toast.makeText(this, "Please enter first name", Toast.LENGTH_SHORT).show();
+            if(TextUtils.isDigitsOnly(edit_first_name.getText().toString().trim())){
+                firstNameLayout.setHelperText("*Enter first name");
+                firstNameLayout.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorRed)));
+                firstNameLayout.setHelperTextEnabled(true);
             }
-            else if(TextUtils.isDigitsOnly(edit_last_name.getText().toString())){
-                Toast.makeText(this, "Please enter last name", Toast.LENGTH_SHORT).show();
+            else if(TextUtils.isDigitsOnly(edit_last_name.getText().toString().trim())){
+                lastNameLayout.setHelperText("*Enter last name");
+                lastNameLayout.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorRed)));
+                lastNameLayout.setHelperTextEnabled(true);
+                firstNameLayout.setHelperTextEnabled(false);
             }
-            else if(TextUtils.isDigitsOnly(edit_phone_number.getText().toString())){
-                Toast.makeText(this, "Please enter Phone number", Toast.LENGTH_SHORT).show();
+            else if(TextUtils.isDigitsOnly(edit_user_name.getText().toString().trim())){
+                usernameLayout.setHelperText("*Enter user name");
+                usernameLayout.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorRed)));
+                usernameLayout.setHelperTextEnabled(true);
+                lastNameLayout.setHelperTextEnabled(false);
+                firstNameLayout.setHelperTextEnabled(false);
             }
-            else if(TextUtils.isDigitsOnly(edit_user_name.getText().toString())){
-                Toast.makeText(this, "Please enter Username", Toast.LENGTH_SHORT).show();
+            else if(TextUtils.isEmpty(edit_phone_number.getText().toString().trim())|| edit_phone_number.getText().toString().length()!=10){
+                phoneNumberLayout.setHelperText("*Enter 10 digit phone number");
+                phoneNumberLayout.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorRed)));
+                phoneNumberLayout.setHelperTextEnabled(true);
+                usernameLayout.setHelperTextEnabled(false);
+                lastNameLayout.setHelperTextEnabled(false);
+                firstNameLayout.setHelperTextEnabled(false);
             }
-            else if(TextUtils.isDigitsOnly(edit_profession.getText().toString())){
-                Toast.makeText(this, "Please enter Profession", Toast.LENGTH_SHORT).show();
+            else if(TextUtils.isDigitsOnly(edit_profession.getText().toString().trim()) || !Arrays.asList(items).contains(edit_profession.getText().toString().trim())){
+                textInputLayout.setHelperText("*Select profession from dropdown");
+                textInputLayout.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorRed)));
+                textInputLayout.setHelperTextEnabled(true);
+                phoneNumberLayout.setHelperTextEnabled(false);
+                usernameLayout.setHelperTextEnabled(false);
+                lastNameLayout.setHelperTextEnabled(false);
+                firstNameLayout.setHelperTextEnabled(false);
+                edit_profession.setText("");
             }
             else{
                 UserInfoModel model = new UserInfoModel();
-                model.firstName = edit_first_name.getText().toString();
-                model.lastName = edit_last_name.getText().toString();
-                model.phoneNumber = edit_phone_number.getText().toString();
-                model.userName = edit_user_name.getText().toString();
-                model.profession = edit_profession.getText().toString();
+                model.firstName = edit_first_name.getText().toString().trim();
+                model.lastName = edit_last_name.getText().toString().trim();
+                model.phoneNumber = edit_phone_number.getText().toString().trim();
+                model.userName = edit_user_name.getText().toString().trim();
+                model.profession = edit_profession.getText().toString().trim();
                 String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 userInfoRef.child(uid)
                         .setValue(model)

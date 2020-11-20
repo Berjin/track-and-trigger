@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseException;
@@ -25,15 +26,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.track.trackandtrigger.Modal.UserInfoModel;
 
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
-import static java.lang.Integer.parseInt;
 
 public class PhoneVerifyActivity extends AppCompatActivity {
     Button btn_phone_verify;
     TextInputEditText edit_verify_code;
-    Button btn_send_verify_code;
+    Button btn_send_verify_code,btn_sign_out;
     TextInputLayout verify_code_text;
     FirebaseAuth mAuth;
     String verificationCodeBySystem;
@@ -45,13 +44,14 @@ public class PhoneVerifyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_verify);
+        btn_sign_out = findViewById(R.id.btn_sign_out);
         btn_phone_verify = findViewById(R.id.btn_phone_verify);
         btn_send_verify_code = findViewById(R.id.btn_send_verify_code);
         edit_verify_code = findViewById(R.id.edit_verify_code);
         verify_code_text = findViewById(R.id.verify_code_text);
         edit_verify_code.setVisibility(View.INVISIBLE);
         verify_code_text.setVisibility(View.INVISIBLE);
-        btn_phone_verify.setVisibility(View.INVISIBLE);
+        btn_phone_verify.setVisibility(View.GONE);
         mAuth = FirebaseAuth.getInstance();
         btn_send_verify_code.setOnClickListener(v -> {
             database = FirebaseDatabase.getInstance();
@@ -80,6 +80,14 @@ public class PhoneVerifyActivity extends AppCompatActivity {
             edit_verify_code.setVisibility(View.VISIBLE);
             btn_phone_verify.setVisibility(View.VISIBLE);
         });
+        btn_sign_out.setOnClickListener(v -> {
+            AuthUI.getInstance()
+                    .signOut(this)
+                    .addOnCompleteListener(task -> {
+                        startActivity(new Intent(this,SplashScreenActivity.class));
+                        this.finish();
+                    });
+        });
         btn_phone_verify.setOnClickListener(v -> {
             if(TextUtils.isEmpty(edit_verify_code.getText().toString())){
                 Toast.makeText(this, "Please enter verification code", Toast.LENGTH_SHORT).show();
@@ -94,10 +102,10 @@ public class PhoneVerifyActivity extends AppCompatActivity {
     private void sendVerificationCode(String phoneNumber) {
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber(phoneNumber)       // Phone number to verify
+                        .setPhoneNumber("+91"+phoneNumber)       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                         .setActivity(this)                 // Activity (for callback binding)
-                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                        .setCallbacks(mCallbacks)// OnVerificationStateChangedCallbacks
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
@@ -119,7 +127,6 @@ public class PhoneVerifyActivity extends AppCompatActivity {
         public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
             verificationCodeBySystem =s;
-            Toast.makeText(PhoneVerifyActivity.this, s, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -138,7 +145,6 @@ public class PhoneVerifyActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
-                        Toast.makeText(PhoneVerifyActivity.this, ""+firebaseAuth.getCurrentUser().getPhoneNumber(), Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Toast.makeText(PhoneVerifyActivity.this, ""+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
