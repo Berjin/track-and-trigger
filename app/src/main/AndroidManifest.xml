@@ -15,9 +15,6 @@
             android:name=".PhoneVerifyActivity"
             android:theme="@style/MainTheme" />
         <activity
-            android:name=".AddActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".EmailVerifyActivity"
             android:theme="@style/MainTheme" />
         <activity

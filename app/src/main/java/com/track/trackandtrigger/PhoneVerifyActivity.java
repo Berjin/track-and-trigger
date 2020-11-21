@@ -63,7 +63,7 @@ public class PhoneVerifyActivity extends AppCompatActivity {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.exists()){
                                 UserInfoModel model = snapshot.getValue(UserInfoModel.class);
-                                sendVerificationCode(model.phoneNumber);
+                                sendVerificationCode(model.getPhoneNumber());
                             }
                             else {
                                 Toast.makeText(PhoneVerifyActivity.this, "User not registered", Toast.LENGTH_SHORT).show();

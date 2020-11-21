@@ -1,13 +1,20 @@
 package com.track.trackandtrigger;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +25,17 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -35,10 +50,12 @@ public class Profile extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final int TAKE_IMAGE_CODE = 20012;
+    private static final String TAG = "Profile Fragment";
 
     TextView email_text;
     TextView name_text;
-    CircleImageView profile_dp;
+    CircleImageView profile_dp,camera_icon;
     View personal_info;
     View share;
     View settings;
@@ -80,6 +97,59 @@ public class Profile extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode==TAKE_IMAGE_CODE){
+            switch (resultCode) {
+                case Activity.RESULT_OK:
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
+                    profile_dp.setImageBitmap(photo);
+                    uploadImage(photo);
+                    break;
+            }
+        }
+    }
+
+    private void uploadImage(Bitmap photo) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        String uid = FirebaseAuth.getInstance().getUid();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference()
+                .child("profileImages")
+                .child(uid+".jpeg");
+        storageReference.putBytes(baos.toByteArray())
+                .addOnSuccessListener(taskSnapshot -> {
+                    getPhotoUrl(storageReference);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "uploadImage: ", e.getCause());
+                });
+    }
+
+    private void getPhotoUrl(StorageReference storageReference) {
+        storageReference.getDownloadUrl()
+                .addOnSuccessListener(uri -> {
+                    setProfilePicUrl(uri);
+                })
+                .addOnFailureListener(e -> {
+
+                });
+    }
+
+    private void setProfilePicUrl(Uri uri) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                .setPhotoUri(uri)
+                .build();
+        user.updateProfile(request)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(getContext(), "Updated Successfully", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(),"Profile image upload failed",Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View profileInflater = inflater.inflate(R.layout.fragment_profile, container, false);
@@ -87,6 +157,7 @@ public class Profile extends Fragment {
         email_text = profileInflater.findViewById(R.id.email_text);
         name_text = profileInflater.findViewById(R.id.name_text);
         profile_dp = profileInflater.findViewById(R.id.profile_pic);
+        camera_icon = profileInflater.findViewById(R.id.camera_icon);
         personal_info = profileInflater.findViewById(R.id.personal_info);
         share = profileInflater.findViewById(R.id.share_app);
         settings = profileInflater.findViewById(R.id.settings);
@@ -97,8 +168,13 @@ public class Profile extends Fragment {
         if(user.getPhotoUrl()!=null) {
             Glide.with(this)
                     .load(user.getPhotoUrl())
+                    .placeholder(R.drawable.ic_account)
                     .into(profile_dp);
         }
+        camera_icon.setOnClickListener(v->{
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(intent,TAKE_IMAGE_CODE);
+        });
         personal_info.setOnClickListener(v -> {
             Toast.makeText(getActivity(), "Profile", Toast.LENGTH_SHORT).show();
         });

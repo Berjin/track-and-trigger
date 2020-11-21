@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Profile">
     <LinearLayout
         android:id="@+id/bg-layout"
@@ -10,19 +11,34 @@
         android:layout_height="250dp"
         android:background="@color/colorPrimary"
         android:orientation="horizontal" />
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_pic"
+    <RelativeLayout
+        android:id="@+id/relative"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/ic_acount"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="60dp">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_account"
         />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/camera_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="5dp"
+        android:background="@drawable/camera_background"
+        android:src="@drawable/ic_camera"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
     <TextView
         android:id="@+id/name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/profile_pic"
+        android:layout_below="@id/relative"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         tools:text="Example"
