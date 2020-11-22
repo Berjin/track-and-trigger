@@ -5,19 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".Home">
 
+    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Dashboard"
-        android:textSize="28sp"
-        android:layout_margin="10dp"
-        android:padding="10dp"
-        android:textColor="@android:color/black"
+        android:text="Home Fragment dkjad adahdjhahd jk"
+        android:textSize="32sp"
         android:scrollHorizontally="true"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"/>
 
 </FrameLayout>
