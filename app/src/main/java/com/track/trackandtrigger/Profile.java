@@ -1,8 +1,8 @@
 package com.track.trackandtrigger;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,29 +11,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.track.trackandtrigger.Modal.UserInfoModel;
 
 import java.io.ByteArrayOutputStream;
 
@@ -61,6 +61,9 @@ public class Profile extends Fragment {
     View settings;
     View help;
     Button sign_out;
+
+    private FirebaseDatabase database;
+    private DatabaseReference userInfoRef;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -176,8 +179,44 @@ public class Profile extends Fragment {
             startActivityForResult(intent,TAKE_IMAGE_CODE);
         });
         personal_info.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "Profile", Toast.LENGTH_SHORT).show();
-        });
+                    database = FirebaseDatabase.getInstance();
+                    userInfoRef = database.getReference(Common.USER_INFO_REFERENCE);
+                    userInfoRef
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        UserInfoModel model = snapshot.getValue(UserInfoModel.class);
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(),R.style.AddItemDialogTheme);
+                                        View itemView = LayoutInflater.from(getContext()).inflate(R.layout.personal_info_layout,null);
+                                        TextView name = itemView.findViewById(R.id.name_textView);
+                                        TextView username = itemView.findViewById(R.id.username_textView);
+                                        TextView email = itemView.findViewById(R.id.email_textView);
+                                        TextView number = itemView.findViewById(R.id.number_textView);
+                                        TextView profession = itemView.findViewById(R.id.profession_textView);
+                                        ImageView close = itemView.findViewById(R.id.close_personal_info);
+                                        name.setText(model.firstName+" "+model.lastName);
+                                        username.setText(model.userName);
+                                        email.setText(user.getEmail());
+                                        number.setText(user.getPhoneNumber());
+                                        profession.setText(model.profession);
+                                        //View
+                                        builder.setView(itemView);
+                                        AlertDialog dialog = builder.create();
+                                        dialog.show();
+                                        close.setOnClickListener(v->{
+                                            dialog.dismiss();
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(getContext(), "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                });
         share.setOnClickListener(v -> {
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
@@ -186,7 +225,8 @@ public class Profile extends Fragment {
             startActivity(Intent.createChooser(sharingIntent,"Share via"));
         });
         settings.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "Settings", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(),SettingsActivity.class);
+            startActivity(intent);
         });
         help.setOnClickListener(v -> {
             String url = "https://example.com";
