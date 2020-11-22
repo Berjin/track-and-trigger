@@ -1,9 +1,12 @@
 package com.track.trackandtrigger;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -11,8 +14,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,8 +33,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.track.trackandtrigger.Modal.ItemsModel;
+import com.track.trackandtrigger.Modal.RemindersModel;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 
 import static java.lang.Integer.parseInt;
 
@@ -145,6 +153,69 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             })
                             .addOnSuccessListener((e)->{
                                 Toast.makeText(this, "Item Added", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            });
+                }
+            });
+        });
+        add_reminder.setOnClickListener(v -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AddItemDialogTheme);
+            View itemView = LayoutInflater.from(this).inflate(R.layout.add_reminder,null);
+            TextInputEditText reminder_title = itemView.findViewById(R.id.reminder_title);
+            TextInputLayout reminder_title_layout = itemView.findViewById(R.id.reminder_title_layout);
+            TextInputEditText reminder_datetime = itemView.findViewById(R.id.reminder_datetime);
+            TextInputLayout reminder_datetime_layout = itemView.findViewById(R.id.reminder_datetime_layout);
+            reminder_datetime.setInputType(InputType.TYPE_NULL);
+            //View
+            builder.setView(itemView);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            Button btn_add_reminder = itemView.findViewById(R.id.btn_add_reminder);
+            reminder_datetime.setOnClickListener(v1 -> {
+                Calendar calendar = Calendar.getInstance();
+                DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
+                    calendar.set(calendar.YEAR,year);
+                    calendar.set(calendar.MONTH,month);
+                    calendar.set(calendar.DAY_OF_MONTH,dayOfMonth);
+
+                    TimePickerDialog.OnTimeSetListener timeSetListener = (view1, hourOfDay, minute) -> {
+                        calendar.set(calendar.HOUR_OF_DAY,hourOfDay);
+                        calendar.set(calendar.MINUTE,minute);
+
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm a");
+                        reminder_datetime.setText(simpleDateFormat.format(calendar.getTime()));
+                    };
+                    new TimePickerDialog(MainActivity.this,timeSetListener,calendar.get(calendar.HOUR_OF_DAY),calendar.get(calendar.MINUTE),false).show();
+                };
+                new DatePickerDialog(MainActivity.this,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(calendar.DAY_OF_MONTH)).show();
+            });
+
+            btn_add_reminder.setOnClickListener(v12 -> {
+                if(TextUtils.isDigitsOnly(reminder_title.getText().toString().trim())){
+                    reminder_title_layout.setHelperText("*Enter reminder title");
+                    reminder_title_layout.setHelperTextColor(ColorStateList.valueOf(getResources().getColor(R.color.colorRed)));
+                    reminder_title_layout.setHelperTextEnabled(true);
+                }
+                else{
+                    RemindersModel model = new RemindersModel();
+                    database = FirebaseDatabase.getInstance();
+                    userInfoRef = database.getReference(Common.USER_INFO_REFERENCE);
+                    String title = reminder_title.getText().toString().trim();
+                    model.title = reminder_title.getText().toString().trim();
+                    model.datetime = reminder_datetime.getText().toString().trim();
+                    model.isDone = false;
+                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    userInfoRef.child(uid)
+                            .child("Reminders")
+                            .child(title)
+                            .setValue(model)
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            })
+                            .addOnSuccessListener((e)->{
+                                Toast.makeText(this, "Reminder Added", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             });
                 }
