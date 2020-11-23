@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceCategory
+    android:title="Notifications">
+    <CheckBoxPreference
+        android:key="send_sms"
+        app:defaultValue="true"
+        android:summaryOn="SMS notification enabled"
+        android:summaryOff="SMS notification disabled"
+        app:title="Send via SMS"/>
+    <CheckBoxPreference
+        android:key="send_email"
+        app:defaultValue="true"
+        android:summaryOn="Email notification enabled"
+        android:summaryOff="Email notification disabled"
+        app:title="Send via Email"/>
+    <CheckBoxPreference
+        android:key="simple_notification"
+        android:summaryOn="Simple notification enabled"
+        android:summaryOff="Simple notification disabled"
+        app:defaultValue="true"
+        app:title="Simple Notification"/>
+</PreferenceCategory>
+<PreferenceCategory
+    android:title="General">
+    <SwitchPreferenceCompat
+        android:key="dark_light"
+        android:title="Dark Theme"
+        android:summaryOn="Dark mode active"
+        android:summaryOff="Light mode active"/>
+    <ListPreference
+        android:key="language_select"
+        android:defaultValue="1"
+        android:entries="@array/language_entries"
+        android:entryValues="@array/entry_values"
+        android:title="Language"
+        android:summary="English"
+        android:dialogTitle="Language"
+        app:useSimpleSummaryProvider="true"
+        app:defaultValue="en"/>
+</PreferenceCategory>
+</PreferenceScreen>

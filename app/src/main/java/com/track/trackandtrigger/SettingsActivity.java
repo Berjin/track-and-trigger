@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 
 public class SettingsActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -15,5 +14,6 @@ public class SettingsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Settings");
+        getSupportFragmentManager().beginTransaction().replace(R.id.preferences_container, new MainSettingsFragment()).commit();
     }
 }
