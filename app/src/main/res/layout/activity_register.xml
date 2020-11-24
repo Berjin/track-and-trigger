@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/mainText"
             android:textSize="22sp"
-            android:text="Enter the following details to create your profile"/>
+            android:text="@string/enter_the_following_details_to_create_your_profile"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                     android:imeOptions="actionNext"
                     android:maxLines="1"
                     android:inputType="text"
-                    android:hint="First Name"
+                    android:hint="@string/first_name"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -57,7 +57,7 @@
                     android:imeOptions="actionNext"
                     android:maxLines="1"
                     android:inputType="text"
-                    android:hint="Last Name"
+                    android:hint="@string/last_name"
                     />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -76,7 +76,7 @@
                 android:imeOptions="actionNext"
                 android:maxLines="1"
                 android:inputType="text"
-                android:hint="User Name"
+                android:hint="@string/user_name"
                 />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -94,7 +94,7 @@
                 android:imeOptions="actionNext"
                 android:maxLines="1"
                 android:inputType="number"
-                android:hint="Phone number"
+                android:hint="@string/phone_number"
                 />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -115,7 +115,7 @@
                 android:imeOptions="actionDone"
                 android:maxLines="1"
                 android:inputType="text"
-                android:hint="Profession"/>
+                android:hint="@string/profession"/>
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
     <LinearLayout
@@ -134,7 +134,7 @@
             android:textColor="@color/colorWhite"
             android:background="@color/colorPrimary"
             android:layout_weight="1"
-            android:text="Sign out"/>
+            android:text="@string/sign_out"/>
     <Button
         android:id="@+id/btn_register"
         android:layout_width="match_parent"

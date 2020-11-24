@@ -75,7 +75,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Personal Info"
+        android:text="@string/personal_info"
         android:textSize="18sp"
         android:textColor="@color/text_color"
         android:layout_marginStart="20dp"
@@ -102,7 +102,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Share"
+        android:text="@string/share"
         android:textSize="18sp"
         android:textColor="@color/text_color"
         android:layout_marginStart="20dp"
@@ -131,7 +131,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Settings"
+            android:text="@string/settings"
             android:textSize="18sp"
             android:textColor="@color/text_color"
             android:layout_marginStart="20dp"
@@ -163,7 +163,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="20dp"
-            android:text="Help and Support"
+            android:text="@string/help_and_support"
             android:textColor="@color/text_color"
             android:textSize="18sp" />
 
@@ -177,7 +177,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="Sign out" />
+        android:text="@string/sign_out" />
 
 </RelativeLayout>
 

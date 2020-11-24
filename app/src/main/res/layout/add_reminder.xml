@@ -21,7 +21,7 @@
             android:layout_marginBottom="16dp"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold"
-            android:text="Add Reminder" />
+            android:text="@string/add_reminder" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/reminder_title_layout"
@@ -37,7 +37,7 @@
                 android:imeOptions="actionNext"
                 android:maxLines="1"
                 android:inputType="text|textCapSentences"
-                android:hint="Reminder Title"
+                android:hint="@string/reminder_title"
                 />
         </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -52,7 +52,7 @@
                     android:clickable="true"
                     android:maxLines="1"
                     android:focusableInTouchMode="false"
-                    android:hint="Date &amp; Time (Optional)"
+                    android:hint="@string/date_amp_time_optional"
                     android:focusable="false" />
             </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
@@ -71,6 +71,6 @@
             android:textColor="@color/colorWhite"
             android:background="@color/colorPrimary"
             android:layout_weight="1"
-            android:text="Add Reminder"/>
+            android:text="@string/add_reminder"/>
     </LinearLayout>
 </RelativeLayout>

@@ -25,7 +25,7 @@
             android:layout_gravity="center_horizontal"
             android:textStyle="bold"
             android:textSize="22sp"
-            android:text="Personal Info"/>
+            android:text="@string/personal_info"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                 android:textSize="20sp"
                 android:padding="10dp"
                 android:textColor="@color/mainText"
-                android:text="Name"/>
+                android:text="@string/name"/>
             <TextView
                 android:id="@+id/name_textView"
                 android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
                 android:padding="10dp"
                 android:textSize="20sp"
                 android:textColor="@color/mainText"
-                android:text="Username"/>
+                android:text="@string/username"/>
             <TextView
                 android:id="@+id/username_textView"
                 android:layout_width="wrap_content"
@@ -95,7 +95,7 @@
                 android:padding="10dp"
                 android:textSize="20sp"
                 android:textColor="@color/mainText"
-                android:text="Email"/>
+                android:text="@string/email"/>
             <TextView
                 android:id="@+id/email_textView"
                 android:layout_width="wrap_content"
@@ -122,7 +122,7 @@
                 android:padding="10dp"
                 android:textSize="20sp"
                 android:textColor="@color/mainText"
-                android:text="Number"/>
+                android:text="@string/number"/>
             <TextView
                 android:id="@+id/number_textView"
                 android:layout_width="wrap_content"
@@ -149,7 +149,7 @@
                 android:padding="10dp"
                 android:textSize="20sp"
                 android:textColor="@color/mainText"
-                android:text="Profession"/>
+                android:text="@string/profession"/>
             <TextView
                 android:id="@+id/profession_textView"
                 android:layout_width="wrap_content"
