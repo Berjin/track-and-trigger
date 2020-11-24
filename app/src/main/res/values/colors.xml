@@ -8,4 +8,5 @@
 
     <color name="mainText">#2D313D</color>
     <color name="mainBackground">#ffffff</color>
+    <color name="bgColorPressed">#98FDF4</color>
 </resources>

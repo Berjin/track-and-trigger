@@ -8,18 +8,21 @@
         app:defaultValue="true"
         android:summaryOn="SMS notification enabled"
         android:summaryOff="SMS notification disabled"
+        app:icon="@drawable/ic_sms"
         app:title="Send via SMS"/>
     <CheckBoxPreference
         android:key="send_email"
         app:defaultValue="true"
         android:summaryOn="Email notification enabled"
         android:summaryOff="Email notification disabled"
+        app:icon="@drawable/ic_email"
         app:title="Send via Email"/>
     <CheckBoxPreference
         android:key="simple_notification"
         android:summaryOn="Simple notification enabled"
         android:summaryOff="Simple notification disabled"
         app:defaultValue="true"
+        app:icon="@drawable/ic_simple_notification"
         app:title="Simple Notification"/>
 </PreferenceCategory>
 <PreferenceCategory
@@ -36,6 +39,7 @@
         android:entryValues="@array/entry_values"
         android:title="Language"
         android:summary="English"
+        android:icon="@drawable/ic_language"
         android:dialogTitle="Language"
         app:useSimpleSummaryProvider="true"
         app:defaultValue="en"/>

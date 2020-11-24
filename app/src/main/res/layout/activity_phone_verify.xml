@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/white"
+    android:background="@color/mainBackground"
     android:theme="@style/MainTheme">
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@color/mainText"
             android:layout_marginTop="200dp"
             android:textSize="30sp"
             android:textAlignment="center"
@@ -42,6 +42,7 @@
             android:id="@+id/btn_send_verify_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/mainText"
             android:text="Send Verification Code"
             android:paddingHorizontal="10dp"
             android:textSize="16dp"

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:theme="@style/MainTheme"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/white">
+    android:background="@color/mainBackground">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@color/mainText"
             android:textSize="22sp"
             android:text="Enter the following details to create your profile"/>
         <LinearLayout

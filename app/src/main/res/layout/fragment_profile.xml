@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/mainBackground"
     tools:context=".Profile">
     <LinearLayout
         android:id="@+id/bg-layout"
@@ -70,7 +71,7 @@
         android:layout_height="36dp"
         android:src="@drawable/ic_person"
         android:layout_marginStart="70dp"
-        />
+        app:tint="@color/mainText" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,6 +96,7 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:src="@drawable/ic_share"
+        app:tint="@color/mainText"
         android:layout_marginStart="70dp"
         />
     <TextView
@@ -123,6 +125,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@drawable/ic_baseline_settings_24"
+            app:tint="@color/mainText"
             android:layout_marginStart="70dp"
             />
         <TextView
@@ -151,6 +154,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginStart="70dp"
+            app:tint="@color/mainText"
             android:src="@drawable/ic_help" />
 
         <TextView

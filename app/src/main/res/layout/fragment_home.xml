@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainBackground"
     tools:context=".Home">
 
     <TextView
@@ -12,12 +13,7 @@
         android:textSize="28sp"
         android:layout_margin="10dp"
         android:padding="10dp"
-        android:textColor="@android:color/black"
+        android:textColor="@color/mainText"
         android:scrollHorizontally="true"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"/>
 
 </FrameLayout>

@@ -7,6 +7,8 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import static com.track.trackandtrigger.SplashScreenActivity.applyTheme;
+
 public class MainSettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
@@ -24,6 +26,9 @@ public class MainSettingsFragment extends PreferenceFragmentCompat implements Sh
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        SharedPreferences sharedPref = getPreferenceScreen().getSharedPreferences();
+        boolean themePref = sharedPref.getBoolean("dark_light", false);
+        applyTheme(themePref);
         Preference pref = findPreference(key);
         if (pref instanceof ListPreference) {
             ListPreference listPreference = (ListPreference) pref;

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/white">
+    android:background="@color/mainBackground">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@color/mainText"
             android:textSize="30sp"
             android:layout_marginTop="200dp"
             android:textAlignment="center"
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Send Verification Email"
-            android:textColorHint="@android:color/darker_gray"
+            android:textColorHint="@color/mainText"
             android:textSize="16dp"
             android:paddingHorizontal="10dp"
             android:layout_gravity="center_horizontal"/>

@@ -19,7 +19,8 @@
             android:layout_gravity="end"
             android:paddingTop="14dp"
             android:paddingEnd="14dp"
-            android:src="@drawable/ic_close_black" />
+            android:src="@drawable/ic_close_black"
+            app:tint="@color/mainText" />
 
     <LinearLayout
         android:id="@+id/add_item"
@@ -35,6 +36,7 @@
             android:layout_weight="1"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
+            app:tint="@color/mainText"
             app:srcCompat="@drawable/ic_add_black" />
 
         <TextView
@@ -42,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="4"
-            android:textColor="@android:color/black"
+            android:textColor="@color/mainText"
             android:textStyle="bold"
             android:text="Add an item" />
     </LinearLayout>
@@ -61,6 +63,7 @@
             android:layout_weight="1"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
+            app:tint="@color/mainText"
             app:srcCompat="@drawable/ic_clock_black" />
 
         <TextView
@@ -69,7 +72,7 @@
             android:layout_gravity="center"
             android:layout_weight="4"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@color/mainText"
             android:text="Add a Reminder" />
     </LinearLayout>
 </LinearLayout>
