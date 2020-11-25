@@ -33,14 +33,14 @@ public class EmailVerifyActivity extends AppCompatActivity {
     TextInputEditText edit_verification_code;
     Button btn_send_verification_email;
     TextInputLayout verify_code_layout;
-    String user = "trackntrigger@gmail.com";
+    String user_email = "trackntrigger@gmail.com";
     String password = "fcttlzfnbtlhlxuk";
     String email;
     int code;
 
     private FirebaseDatabase database;
     private DatabaseReference userInfoRef;
-
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
     GMailSender sender;
 
@@ -120,7 +120,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
     private void sendVerificationEmail(String email, int code) {
         //
         Toast.makeText(this, "An email with code  will be send to "+email, Toast.LENGTH_SHORT).show();
-        sender=new GMailSender(user,password);
+        sender=new GMailSender(user_email,password);
 
         MyAsyncClass myasync = new MyAsyncClass();
         myasync.execute();
@@ -147,7 +147,7 @@ public class EmailVerifyActivity extends AppCompatActivity {
             try {
 
                 // Add subject, Body, your mail Id, and receiver mail Id.
-                sender.sendMail("Please verify your email", "To verify your email address, please use the following One Time Password(OTP):\n"+ code, "trackntrigger@gmail.com", email);
+                sender.sendMail("Please verify your email", "Hello "+ user.getDisplayName() +",\nTo verify your email address, please use the following One Time Password(OTP):\n"+ code, "trackntrigger@gmail.com", email);
                 Log.d("send", "done");
             } catch (Exception ex) {
                 Log.d("exceptionsending", ex.toString());
