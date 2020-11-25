@@ -1,7 +1,9 @@
 package com.track.trackandtrigger;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -43,6 +45,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
+
 import static java.lang.Integer.parseInt;
 
 
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private FirebaseDatabase database;
     private DatabaseReference userInfoRef;
+    int rno=0;
     private ArrayList<String> categoryTitles = new ArrayList<>();
     private Set<String> categoryTitlesSet = new HashSet<>();
     ValueEventListener listener;
@@ -199,6 +203,58 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm a");
                         reminder_datetime.setText(simpleDateFormat.format(calendar.getTime()));
+
+
+
+
+
+
+
+
+
+
+                        // Intent
+                         rno++;
+                        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+                        //  intent.putExtra("notificationId", notificationId);
+                         intent.putExtra("message",reminder_title.getText().toString().trim());
+
+                        // PendingIntent
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                                MainActivity.this,rno, intent, PendingIntent.FLAG_CANCEL_CURRENT
+                        );
+
+                        // AlarmManager
+                        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+
+                        Calendar startTime = Calendar.getInstance();
+                        startTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        startTime.set(Calendar.MINUTE, minute);
+                        startTime.set(Calendar.SECOND, hourOfDay);
+                        startTime.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                        startTime.set(Calendar.YEAR,year);
+
+
+                        long alarmStartTime = startTime.getTimeInMillis();
+
+                        // Set Alarm
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmStartTime, pendingIntent);
+                        Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     };
                     new TimePickerDialog(MainActivity.this,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
                 };
