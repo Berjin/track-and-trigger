@@ -1,7 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Track and Trigger</string>
-    <string name="facebook_application_id" translatable="false">374376203910454</string>
-    <string name="fb_login_protocol_scheme" translatable="false">74b291cd9b00f9548817e77d8eb84ec3</string>
 
     <string name="verify_email">Verify Email</string>
     <string name="sign_out">Sign Out</string>
@@ -59,14 +58,4 @@
     <string name="dark_mode_active">Dark mode active</string>
     <string name="light_mode_active">Light mode active</string>
     <string name="language">Language</string>
-    <string-array name="language_entries">
-        <item>English</item>
-        <item>தமிழ்</item>
-        <item>മലയാളം</item>
-    </string-array>
-    <string-array name="entry_values">
-        <item>en</item>
-        <item>ta</item>
-        <item>mal</item>
-    </string-array>
 </resources>

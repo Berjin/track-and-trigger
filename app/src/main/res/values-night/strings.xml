@@ -2,6 +2,7 @@
     <string name="app_name">Track and Trigger</string>
     <string name="facebook_application_id" translatable="false">374376203910454</string>
     <string name="fb_login_protocol_scheme" translatable="false">74b291cd9b00f9548817e77d8eb84ec3</string>
+
     <string name="verify_email">Verify Email</string>
     <string name="sign_out">Sign Out</string>
     <string name="verify_phone_number">Verify Phone Number</string>
@@ -10,6 +11,52 @@
     <string name="sign_in_with_email">Sign In with Email</string>
     <string name="sign_in_with_facebook">Sign In with Facebook</string>
     <string name="continue_text">Continue</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="verify_email_caps">VERIFY EMAIL</string>
+    <string name="enter_the_verification_code">Enter the verification code</string>
+    <string name="send_verification_email">Send Verification Email</string>
+    <string name="verify">Verify</string>
+    <string name="verify_number_caps">VERIFY NUMBER</string>
+    <string name="send_verification_code">Send Verification Code</string>
+    <string name="enter_the_following_details_to_create_your_profile">Enter the following details to create your profile</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="user_name">User Name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="profession">Profession</string>
+    <string name="add_item">Add Item</string>
+    <string name="category">Category</string>
+    <string name="item_name">Item Name</string>
+    <string name="zero">0</string>
+    <string name="item_count">Item Count</string>
+    <string name="add_reminder">Add Reminder</string>
+    <string name="reminder_title">Reminder Title</string>
+    <string name="date_amp_time_optional"><![CDATA[Date & Time (Optional)]]></string>
+    <string name="add_an_item">Add an item</string>
+    <string name="add_a_reminder">Add a Reminder</string>
+    <string name="diary">Diary</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="personal_info">Personal Info</string>
+    <string name="share">Share</string>
+    <string name="settings">Settings</string>
+    <string name="help_and_support">Help and Support</string>
+    <string name="reminders">Reminders</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="number">Number</string>
+    <string name="sms_notification_enabled">SMS notification enabled</string>
+    <string name="sms_notifications_disabled">SMS notification disabled</string>
+    <string name="email_notification_enabled">Email notification enabled</string>
+    <string name="email_notification_disabled">Email notification disabled</string>
+    <string name="send_via_sms">Send via SMS</string>
+    <string name="send_via_email">Send via Email</string>
+    <string name="notifications">Notifications</string>
+    <string name="simple_notification_enabled">Simple notification enabled</string>
+    <string name="simple_notification_disabled">Simple notification disabled</string>
+    <string name="simple_notification">Simple Notification</string>
+    <string name="general">General</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="dark_mode_active">Dark mode active</string>
+    <string name="light_mode_active">Light mode active</string>
+    <string name="language">Language</string>
 </resources>

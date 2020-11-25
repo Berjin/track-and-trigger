@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Reminders"
+        android:text="@string/reminders"
         android:textSize="28sp"
         android:layout_margin="10dp"
         android:padding="10dp"

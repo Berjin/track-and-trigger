@@ -46,7 +46,7 @@
             android:layout_weight="4"
             android:textColor="@color/mainText"
             android:textStyle="bold"
-            android:text="Add an item" />
+            android:text="@string/add_an_item" />
     </LinearLayout>
 
     <LinearLayout
@@ -73,6 +73,6 @@
             android:layout_weight="4"
             android:textStyle="bold"
             android:textColor="@color/mainText"
-            android:text="Add a Reminder" />
+            android:text="@string/add_a_reminder" />
     </LinearLayout>
 </LinearLayout>
