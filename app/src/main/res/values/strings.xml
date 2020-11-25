@@ -44,6 +44,21 @@
     <string name="username">Username</string>
     <string name="email">Email</string>
     <string name="number">Number</string>
+    <string name="sms_notification_enabled">SMS notification enabled</string>
+    <string name="sms_notifications_disabled">SMS notification disabled</string>
+    <string name="email_notification_enabled">Email notification enabled</string>
+    <string name="email_notification_disabled">Email notification disabled</string>
+    <string name="send_via_sms">Send via SMS</string>
+    <string name="send_via_email">Send via Email</string>
+    <string name="notifications">Notifications</string>
+    <string name="simple_notification_enabled">Simple notification enabled</string>
+    <string name="simple_notification_disabled">Simple notification disabled</string>
+    <string name="simple_notification">Simple Notification</string>
+    <string name="general">General</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="dark_mode_active">Dark mode active</string>
+    <string name="light_mode_active">Light mode active</string>
+    <string name="language">Language</string>
     <string-array name="language_entries">
         <item>English</item>
         <item>தமிழ்</item>
