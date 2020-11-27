@@ -1,6 +1,9 @@
 package com.track.trackandtrigger;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,7 +73,12 @@ public class ReminderRecyclerviewAdapter extends FirebaseRecyclerAdapter<Reminde
                             break;
                         case R.id.popup_delete:
                             //TODO reminder delete action
-                            Toast.makeText(view.getContext(), "Delete", Toast.LENGTH_SHORT).show();
+                           // AlarmManager alarmManager = (AlarmManager)view.getContext().getSystemService(Context.ALARM_SERVICE);
+                           // Intent myIntent = new Intent(view.getContext(), AlarmReceiver.class);
+                           // PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                             //       view.getContext(), 799958, myIntent, 0);                            // TODO add reminderId here and uncomment
+
+                            //alarmManager.cancel(pendingIntent);
                             break;
                     }
                     return false;
