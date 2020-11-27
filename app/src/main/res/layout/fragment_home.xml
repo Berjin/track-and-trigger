@@ -84,7 +84,8 @@
         android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="130dp">
+        android:layout_marginTop="130dp"
+        android:layout_marginBottom="50dp">
         <LinearLayout
             android:id="@+id/scrollLayout"
             android:orientation="vertical"

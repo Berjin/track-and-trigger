@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.track.trackandtrigger.Modal.ItemsModel;
@@ -32,6 +33,9 @@ import com.track.trackandtrigger.Modal.RemindersModel;
 import com.track.trackandtrigger.Modal.UserInfoModel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,12 +49,14 @@ public class Home extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ArrayList<String> categoryTitles = new ArrayList<>();
-    private ArrayList<String> today_reminder_texts = new ArrayList<>();
-    private ArrayList<String> today_reminder_times = new ArrayList<>();
-    private ArrayList<String> tomorrow_reminder_texts = new ArrayList<>();
-    private ArrayList<String> tomorrow_reminder_times = new ArrayList<>();
+    private Set<String> categoryTitlesSet = new HashSet<>();
+    ValueEventListener listener;
+    DatabaseReference ref;
+    RecyclerView todayReminderRecyclerView;
+    RecyclerView categoryRecyclerView;
 
     ReminderRecyclerviewAdapter reminderRecyclerviewAdapter;
+    CategoryRecyclerviewAdapter adapter;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -90,12 +96,14 @@ public class Home extends Fragment {
     public void onStart() {
         super.onStart();
         reminderRecyclerviewAdapter.startListening();
+        ref.addValueEventListener(listener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         reminderRecyclerviewAdapter.stopListening();
+        ref.removeEventListener(listener);
     }
 
     @Override
@@ -110,36 +118,45 @@ public class Home extends Fragment {
         add_category_home.setOnClickListener(v -> {
             Toast.makeText(getContext(), "Add Category", Toast.LENGTH_SHORT).show();
         });
-        FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE).child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                snapshot.child("Items").getChildren().iterator().forEachRemaining((fruit) -> categoryTitles.add(fruit.getKey().trim()));
+
+        ref = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE);
+        listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        snapshot.child("Items").getChildren().iterator().forEachRemaining(v -> categoryTitlesSet.add(v.getKey()));
+                        for (String i : categoryTitlesSet) {
+                            if (!categoryTitles.contains(i)) {
+                                categoryTitles.add(i);
                             }
-
                         }
+                        adapter = new CategoryRecyclerviewAdapter(getContext(), categoryTitles);
+                        categoryRecyclerView.setAdapter(adapter);
                     }
+                }
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(getContext(), "" + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        };
+        ref.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(listener);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        RecyclerView categoryRecyclerView = homeInflater.findViewById(R.id.category_recycler_view);
+        categoryRecyclerView = homeInflater.findViewById(R.id.category_recycler_view);
         categoryRecyclerView.setLayoutManager(linearLayoutManager);
-        CategoryRecyclerviewAdapter adapter = new CategoryRecyclerviewAdapter(getContext(), categoryTitles);
+        adapter = new CategoryRecyclerviewAdapter(getContext(), categoryTitles);
         categoryRecyclerView.setAdapter(adapter);
 
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         LinearLayoutManager todayReminderLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        RecyclerView todayReminderRecyclerView = homeInflater.findViewById(R.id.reminder_today_recycler_view);
+        todayReminderRecyclerView = homeInflater.findViewById(R.id.reminder_today_recycler_view);
         todayReminderRecyclerView.setLayoutManager(todayReminderLayoutManager);
         FirebaseRecyclerOptions<RemindersModel> options = new FirebaseRecyclerOptions.Builder<RemindersModel>()
-                .setQuery(FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE).child(uid).child("Reminders").orderByChild("-datetime"), RemindersModel.class)
+                .setQuery(FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE).child(uid).child("Reminders").orderByChild("-datetime").limitToFirst(5), RemindersModel.class)
                 .build();
         reminderRecyclerviewAdapter = new ReminderRecyclerviewAdapter(options);
         todayReminderRecyclerView.setAdapter(reminderRecyclerviewAdapter);
