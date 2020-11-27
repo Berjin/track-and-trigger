@@ -66,6 +66,8 @@ dependencies {
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    //Firebase database UI
+    implementation 'com.firebaseui:firebase-ui-database:6.2.1'
     //Jetpack-Preference
     implementation 'androidx.preference:preference:1.1.1'
 }

@@ -176,20 +176,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             reminder_datetime.setOnClickListener(v1 -> {
                 Calendar calendar = Calendar.getInstance();
                 DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
-                    calendar.set(calendar.YEAR,year);
-                    calendar.set(calendar.MONTH,month);
-                    calendar.set(calendar.DAY_OF_MONTH,dayOfMonth);
+                    calendar.set(Calendar.YEAR,year);
+                    calendar.set(Calendar.MONTH,month);
+                    calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
 
                     TimePickerDialog.OnTimeSetListener timeSetListener = (view1, hourOfDay, minute) -> {
-                        calendar.set(calendar.HOUR_OF_DAY,hourOfDay);
-                        calendar.set(calendar.MINUTE,minute);
+                        calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                        calendar.set(Calendar.MINUTE,minute);
 
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm a");
                         reminder_datetime.setText(simpleDateFormat.format(calendar.getTime()));
                     };
-                    new TimePickerDialog(MainActivity.this,timeSetListener,calendar.get(calendar.HOUR_OF_DAY),calendar.get(calendar.MINUTE),false).show();
+                    new TimePickerDialog(MainActivity.this,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
                 };
-                new DatePickerDialog(MainActivity.this,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(calendar.DAY_OF_MONTH)).show();
+                new DatePickerDialog(MainActivity.this,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
             });
 
             btn_add_reminder.setOnClickListener(v12 -> {

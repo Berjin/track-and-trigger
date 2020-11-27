@@ -130,9 +130,7 @@ public class Profile extends Fragment {
 
     private void getPhotoUrl(StorageReference storageReference) {
         storageReference.getDownloadUrl()
-                .addOnSuccessListener(uri -> {
-                    setProfilePicUrl(uri);
-                })
+                .addOnSuccessListener(this::setProfilePicUrl)
                 .addOnFailureListener(e -> {
 
                 });
