@@ -11,10 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"
-            android:theme="@style/PreferenceTheme"
+        <activity android:name=".Category"></activity>
+        <activity
+            android:name=".SettingsActivity"
             android:configChanges="locale"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/PreferenceTheme" />
         <activity
             android:name=".PhoneVerifyActivity"
             android:theme="@style/MainTheme" />
