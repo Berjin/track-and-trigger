@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:imeOptions="actionNext"
                 android:maxLines="1"
-                android:inputType="text"
+                android:inputType="text|textCapSentences"
                 android:hint="@string/category"/>
         </com.google.android.material.textfield.TextInputLayout>
 

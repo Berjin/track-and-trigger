@@ -1,5 +1,6 @@
 package com.track.trackandtrigger;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,10 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.track.trackandtrigger.Modal.RemindersModel;
 
 public class Reminders extends Fragment {
@@ -22,6 +28,11 @@ public class Reminders extends Fragment {
 
     RecyclerView allReminderRecyclerView;
     ReminderRecyclerviewAdapter allreminderRecyclerviewAdapter;
+    String uid;
+    FirebaseRecyclerOptions<RemindersModel> options;
+    Query query;
+    String text;
+
     private String mParam1;
     private String mParam2;
 
@@ -63,15 +74,32 @@ public class Reminders extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View remindersInflate = inflater.inflate(R.layout.fragment_reminders, container, false);
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         LinearLayoutManager todayReminderLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         allReminderRecyclerView = remindersInflate.findViewById(R.id.reminders_recycler_view);
+        ImageView allRemindersSearchBtn = remindersInflate.findViewById(R.id.allReminderSearchBtn);
+        EditText allRemindersSearch = remindersInflate.findViewById(R.id.allRemindersSearch);
+        allRemindersSearchBtn.setOnClickListener(v -> {
+            text = allRemindersSearch.getText().toString();
+            //Hide Keyboard
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getView().getWindowToken(),0);
+            query = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE).child(uid).child("Reminders").orderByChild("title").startAt(text).endAt(text+"\uf8ff");
+            options = new FirebaseRecyclerOptions.Builder<RemindersModel>()
+                    .setQuery(query, RemindersModel.class)
+                    .build();
+            allreminderRecyclerviewAdapter = new ReminderRecyclerviewAdapter(options);
+            allreminderRecyclerviewAdapter.startListening();
+            allReminderRecyclerView.setAdapter(allreminderRecyclerviewAdapter);
+
+        });
+        query = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE).child(uid).child("Reminders").orderByChild("title");
         allReminderRecyclerView.setLayoutManager(todayReminderLayoutManager);
-        FirebaseRecyclerOptions<RemindersModel> options = new FirebaseRecyclerOptions.Builder<RemindersModel>()
-                .setQuery(FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE).child(uid).child("Reminders").orderByChild("-datetime"), RemindersModel.class)
+        options = new FirebaseRecyclerOptions.Builder<RemindersModel>()
+                .setQuery(query, RemindersModel.class)
                 .build();
         allreminderRecyclerviewAdapter = new ReminderRecyclerviewAdapter(options);
         allReminderRecyclerView.setAdapter(allreminderRecyclerviewAdapter);
         return remindersInflate;
     }
-}
+    }
