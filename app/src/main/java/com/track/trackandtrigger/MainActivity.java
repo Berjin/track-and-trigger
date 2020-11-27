@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -67,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private FirebaseDatabase database;
     private DatabaseReference userInfoRef;
+    AlarmManager alarmManager;
+    PendingIntent pendingIntent;
+    long alarmStartTime;
     int rno=0;
     private ArrayList<String> categoryTitles = new ArrayList<>();
     private Set<String> categoryTitlesSet = new HashSet<>();
@@ -220,19 +224,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
 
+
+
+
                         // Intent
-                         rno=new Random().nextInt(900000) + 100000;                                      //TODO add this in correct button
+                         rno=new Random().nextInt(900000) + 100000;
                         Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-                        //  intent.putExtra("notificationId", notificationId);
+                          intent.putExtra("notificationId", rno);
                          intent.putExtra("message",reminder_title.getText().toString().trim());
 
                         // PendingIntent
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                         pendingIntent = PendingIntent.getBroadcast(
                                 MainActivity.this,rno, intent, PendingIntent.FLAG_CANCEL_CURRENT
                         );
 
                         // AlarmManager
-                        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+                         alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
 
                         Calendar startTime = Calendar.getInstance();
                         startTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -242,11 +249,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         startTime.set(Calendar.YEAR,year);
 
 
-                        long alarmStartTime = startTime.getTimeInMillis();
+                         alarmStartTime = startTime.getTimeInMillis();
 
                         // Set Alarm
-                        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmStartTime, pendingIntent);
-                        Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
+
 
 
 
@@ -298,6 +304,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                             .addOnSuccessListener((e)->{
                                 Toast.makeText(this, "Reminder Added", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
+
+                                alarmManager.set(AlarmManager.RTC_WAKEUP, alarmStartTime, pendingIntent);
+                                Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
                             });
                 }
             });
