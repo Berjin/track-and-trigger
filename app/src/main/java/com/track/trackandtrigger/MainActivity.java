@@ -52,6 +52,7 @@ import java.util.Set;
 
 import java.util.Random;
 
+
 import static java.lang.Integer.parseInt;
 
 
@@ -220,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
                         // Intent
-                         rno++;
+                         rno=new Random().nextInt(900000) + 100000;                                      //TODO add this in correct button
                         Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
                         //  intent.putExtra("notificationId", notificationId);
                          intent.putExtra("message",reminder_title.getText().toString().trim());
@@ -284,8 +285,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     model.title = reminder_title.getText().toString().trim();
                     model.datetime = reminder_datetime.getText().toString().trim();
                     model.isDone = false;
-                    //TODO
-                    model.reminder_id = ;
+                    model.reminder_id=rno;
+                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     userInfoRef.child(uid)
                             .child("Reminders")
                             .child(title)
