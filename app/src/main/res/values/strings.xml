@@ -59,6 +59,10 @@
     <string name="dark_mode_active">Dark mode active</string>
     <string name="light_mode_active">Light mode active</string>
     <string name="language">Language</string>
+    <string name="hello">Hello</string>
+    <string name="search">Search</string>
+    <string name="categories">Categories</string>
+    <string name="upcoming_reminders">Upcoming Reminders</string>
     <string-array name="language_entries">
         <item>English</item>
         <item>தமிழ்</item>

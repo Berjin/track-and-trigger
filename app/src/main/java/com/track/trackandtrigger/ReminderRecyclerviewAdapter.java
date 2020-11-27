@@ -2,12 +2,16 @@ package com.track.trackandtrigger;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -35,14 +39,43 @@ public class ReminderRecyclerviewAdapter extends FirebaseRecyclerAdapter<Reminde
         holder.reminder_time.setText(model.getDatetime());
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CheckBox reminder_text;
         TextView reminder_time;
+        ImageView reminder_popup;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             reminder_text = itemView.findViewById(R.id.reminder_text);
             reminder_time =itemView.findViewById(R.id.reminder_time);
+            reminder_popup = itemView.findViewById(R.id.reminder_popup);
+            reminder_popup.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            showPopupMenu(v);
+        }
+        private void showPopupMenu(View view){
+            PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
+            popupMenu.inflate(R.menu.reminder_popup_menu);
+            popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()){
+                        case R.id.popup_edit:
+                            //TODO reminder edit action
+                            Toast.makeText(view.getContext(), "Edit", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.popup_delete:
+                            //TODO reminder delete action
+                            Toast.makeText(view.getContext(), "Delete", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                    return false;
+                }
+            });
         }
     }
 }
