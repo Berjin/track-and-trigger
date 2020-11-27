@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,13 +30,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.track.trackandtrigger.Modal.ItemsModel;
 import com.track.trackandtrigger.Modal.RemindersModel;
+import com.track.trackandtrigger.Modal.UserInfoModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Random;
 
 import static java.lang.Integer.parseInt;
 
@@ -199,14 +206,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     reminder_title_layout.setHelperTextEnabled(true);
                 }
                 else{
+                    final int[] LatestReminderId = new int[1];
                     RemindersModel model = new RemindersModel();
                     database = FirebaseDatabase.getInstance();
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    String uid = user.getUid();
                     userInfoRef = database.getReference(Common.USER_INFO_REFERENCE);
                     String title = reminder_title.getText().toString().trim();
                     model.title = reminder_title.getText().toString().trim();
                     model.datetime = reminder_datetime.getText().toString().trim();
                     model.isDone = false;
-                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    //TODO
+                    model.reminder_id = ;
                     userInfoRef.child(uid)
                             .child("Reminders")
                             .child(title)
