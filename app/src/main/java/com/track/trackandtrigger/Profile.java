@@ -130,9 +130,7 @@ public class Profile extends Fragment {
 
     private void getPhotoUrl(StorageReference storageReference) {
         storageReference.getDownloadUrl()
-                .addOnSuccessListener(uri -> {
-                    setProfilePicUrl(uri);
-                })
+                .addOnSuccessListener(this::setProfilePicUrl)
                 .addOnFailureListener(e -> {
 
                 });
@@ -239,7 +237,6 @@ public class Profile extends Fragment {
                     .signOut(getActivity())
                     .addOnCompleteListener(task -> {
                         startActivity(new Intent(getActivity(),SplashScreenActivity.class));
-                        getActivity().finish();
                     });
         });
         // Inflate the layout for this fragment

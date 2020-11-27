@@ -3,10 +3,17 @@ package com.track.trackandtrigger;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.track.trackandtrigger.Modal.RemindersModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +27,8 @@ public class Reminders extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    RecyclerView allReminderRecyclerView;
+    ReminderRecyclerviewAdapter allreminderRecyclerviewAdapter;
     private String mParam1;
     private String mParam2;
 
@@ -28,15 +36,6 @@ public class Reminders extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Reminders.
-     */
-    // TODO: Rename and change types and number of parameters
     public static Reminders newInstance(String param1, String param2) {
         Reminders fragment = new Reminders();
         Bundle args = new Bundle();
@@ -54,11 +53,32 @@ public class Reminders extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        allreminderRecyclerviewAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        allreminderRecyclerviewAdapter.stopListening();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reminders, container, false);
+        View remindersInflate = inflater.inflate(R.layout.fragment_reminders, container, false);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        LinearLayoutManager todayReminderLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        allReminderRecyclerView = remindersInflate.findViewById(R.id.reminders_recycler_view);
+        allReminderRecyclerView.setLayoutManager(todayReminderLayoutManager);
+        FirebaseRecyclerOptions<RemindersModel> options = new FirebaseRecyclerOptions.Builder<RemindersModel>()
+                .setQuery(FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE).child(uid).child("Reminders").orderByChild("-datetime"), RemindersModel.class)
+                .build();
+        allreminderRecyclerviewAdapter = new ReminderRecyclerviewAdapter(options);
+        allReminderRecyclerView.setAdapter(allreminderRecyclerviewAdapter);
+        return remindersInflate;
     }
 }
