@@ -3,27 +3,54 @@ package com.track.trackandtrigger;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String CHANNEL_ID = "CHANNEL_SAMPLE";
 
+    String user_email = "trackntrigger@gmail.com";
+    String password = "fcttlzfnbtlhlxuk";
+    String email;
+    GMailSender sender;
+    String message;
+    String phone;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
         // Get id & message
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        email = user.getEmail();
+        phone =user.getPhoneNumber();
+
+
         int notificationId = intent.getIntExtra("notificationId", 0);
-        String message = intent.getStringExtra("message");
+         message = intent.getStringExtra("message");
+
+
 
         // Call MainActivity when notification is tapped.
         Intent mainIntent = new Intent(context, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, mainIntent, 0);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, notificationId, mainIntent, 0);
 
         // NotificationManager
         NotificationManager notificationManager =
@@ -49,5 +76,110 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         // Notify
         notificationManager.notify(notificationId, builder.build());
+
+
+
+
+
+
+        sendEmail(email,message);
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
+
+
+
+    private void sendEmail(String email, String message) {
+
+        sender=new GMailSender(user_email,password);
+
+        AlarmReceiver.MyAsyncClass myasync = new AlarmReceiver.MyAsyncClass();
+        myasync.execute();
+    }
+
+
+    class MyAsyncClass extends AsyncTask<Void, Void, Void> {
+
+        ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+
+        }
+
+        @Override
+
+        protected Void doInBackground(Void... mApi) {
+            try {
+
+
+               sender.sendMail("Reminder",message, "trackntrigger@gmail.com", email);
+
+            } catch (Exception ex) {
+                Log.d("exceptionsending", ex.toString());
+            }
+            return null;
+        }
+
+        @Override
+
+        protected void onPostExecute(Void result) {
+
+            super.onPostExecute(result);
+            pDialog.cancel();
+
+
+
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
