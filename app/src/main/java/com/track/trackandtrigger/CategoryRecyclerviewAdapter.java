@@ -35,7 +35,7 @@ public class CategoryRecyclerviewAdapter extends RecyclerView.Adapter<CategoryRe
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(context)
                 .asBitmap()
-                .load(R.drawable.ic_grocery)
+                .load(R.drawable.ic__category)
                 .into(holder.category_image);
         holder.category_title.setText(categoryTitles.get(position));
         holder.category_image.setOnClickListener(v -> {
