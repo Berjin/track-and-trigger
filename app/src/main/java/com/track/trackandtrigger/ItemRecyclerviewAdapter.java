@@ -1,31 +1,29 @@
 package com.track.trackandtrigger;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.track.trackandtrigger.Modal.ItemsModel;
-import com.track.trackandtrigger.Modal.RemindersModel;
-
-import java.text.BreakIterator;
-import java.util.ArrayList;
 
 public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel, ItemRecyclerviewAdapter.ViewHolder> {
 
-    public ReminderRecyclerviewAdapter(@NonNull FirebaseRecyclerOptions<ItemsModel> options) {
+    public ItemRecyclerviewAdapter(@NonNull FirebaseRecyclerOptions<ItemsModel> options) {
         super(options);
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull ItemsModel model) {
-        holder.textItem.setText(model.getTitle());
+        holder.textItem.setText(model.getTopic());
 
     }
 
@@ -38,7 +36,37 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public BreakIterator textItem;
-        CheckBox textItem;
+        TextView textItem;
+        ImageView category_popup;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textItem =itemView.findViewById(R.id.textItem);
+            category_popup = itemView.findViewById(R.id.category_popup);
+            category_popup.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            showPopupMenu(v);
+        }
+        private void showPopupMenu(View view){
+            PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
+            popupMenu.inflate(R.menu.reminder_popup_menu);
+            popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()){
+                    case R.id.popup_edit:
+                        //TODO reminder edit action
+                        Toast.makeText(view.getContext(), "Edit", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.popup_delete:
+                        //TODO reminder delete action
+                        Toast.makeText(view.getContext(), "Delete", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return false;
+            });
+        }
     }
 }

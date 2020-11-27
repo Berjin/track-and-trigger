@@ -2,6 +2,7 @@ package com.track.trackandtrigger;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 import android.os.Bundle;
@@ -100,7 +101,8 @@ public class Home extends Fragment {
         String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         textUsername.setText(userName + ",");
         add_category_home.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Add Category", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(),CategoryActivity.class);
+            startActivity(intent);
         });
 
         ref = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE);
