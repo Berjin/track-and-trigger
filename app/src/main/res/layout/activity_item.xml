@@ -114,7 +114,7 @@
     <LinearLayout
         android:id="@+id/image_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/quantity_layout"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
@@ -125,8 +125,8 @@
         android:weightSum="2">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic__category"/>
+            android:layout_height="match_parent"
+            android:src="@drawable/potato"/>
 
     </LinearLayout>
 

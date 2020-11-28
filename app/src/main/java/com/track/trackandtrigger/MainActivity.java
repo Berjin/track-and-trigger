@@ -215,23 +215,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm a");
                         reminder_datetime.setText(simpleDateFormat.format(calendar.getTime()));
 
-
-
-
-
-
-
-
-
-
-
-
-
                         // Intent
                          rno=new Random().nextInt(900000) + 100000;
                         Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
                           intent.putExtra("notificationId", rno);
-                         intent.putExtra("message",reminder_title.getText().toString().trim());
+                          String userDisplayName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                         intent.putExtra("message","Dear "+userDisplayName+",\n\n"+"You have a reminder scheduled now.\n"+"Title: "+reminder_title.getText().toString().trim());
 
                         // PendingIntent
                          pendingIntent = PendingIntent.getBroadcast(
@@ -252,21 +241,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                          alarmStartTime = startTime.getTimeInMillis();
 
                         // Set Alarm
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     };
                     new TimePickerDialog(MainActivity.this,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
@@ -292,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     model.datetime = reminder_datetime.getText().toString().trim();
                     model.isDone = false;
                     model.reminder_id=rno;
-                    String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     userInfoRef.child(uid)
                             .child("Reminders")
                             .child(title)

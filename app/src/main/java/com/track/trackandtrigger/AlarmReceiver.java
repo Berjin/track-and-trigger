@@ -68,7 +68,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         // Prepare Notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
-                .setContentTitle("TITLE")
+                .setContentTitle("Reminder")
                 .setContentText(message)
                 .setContentIntent(contentIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

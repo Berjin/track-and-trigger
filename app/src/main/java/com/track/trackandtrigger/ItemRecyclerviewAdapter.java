@@ -105,7 +105,6 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
                         builder.setView(itemView);
                         AlertDialog dialog = builder.create();
                         dialog.show();
-                        Toast.makeText(view.getContext(), ItemsCount.get(position), Toast.LENGTH_SHORT).show();
                         item_edit_count.setText(ItemsCount.get(position));
                         increase_edit_count.setOnClickListener(v1 -> {
                             count[0] = parseInt(item_edit_count.getText().toString().trim());
