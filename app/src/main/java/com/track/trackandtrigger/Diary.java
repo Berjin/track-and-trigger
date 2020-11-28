@@ -3,12 +3,29 @@ package com.track.trackandtrigger;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirestoreRegistrar;
+import com.google.firebase.firestore.Query;
+import com.track.trackandtrigger.Modal.DiaryModel;
+
 public class Diary extends Fragment {
+
+    View diaryinflator;
+    private FirebaseFirestore db=FirebaseFirestore.getInstance();
+    private CollectionReference notebookRef=db.collection("Notebook");
+
+    private DiaryRecyclerviewAdapter adapter;
+
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -42,6 +59,36 @@ public class Diary extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_diary, container, false);
+         diaryinflator= inflater.inflate(R.layout.fragment_diary, container, false);
+        setUpRecyclerView();
+
+        return diaryinflator;
+    }
+
+    private void setUpRecyclerView() {
+        Query query=notebookRef.orderBy("datetime",Query.Direction.DESCENDING);
+
+        FirestoreRecyclerOptions<DiaryModel> options=new FirestoreRecyclerOptions.Builder<DiaryModel>()
+                .setQuery(query, DiaryModel.class)
+                .build();
+        adapter=new DiaryRecyclerviewAdapter(options);
+
+        RecyclerView recyclerView=diaryinflator.findViewById(R.id.diary_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }
