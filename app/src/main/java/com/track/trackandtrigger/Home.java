@@ -101,7 +101,8 @@ public class Home extends Fragment {
         String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         textUsername.setText(userName + ",");
         add_category_home.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Add Category", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(),CategoryActivity.class);
+            startActivity(intent);
         });
 
         ref = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE);
