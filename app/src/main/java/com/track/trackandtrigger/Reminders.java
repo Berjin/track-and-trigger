@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,10 +29,10 @@ public class Reminders extends Fragment {
 
     RecyclerView allReminderRecyclerView;
     ReminderRecyclerviewAdapter allreminderRecyclerviewAdapter;
-    String uid;
+    String uid,text;
     FirebaseRecyclerOptions<RemindersModel> options;
     Query query;
-    String text;
+    EditText allRemindersSearch;
 
     private String mParam1;
     private String mParam2;
@@ -78,20 +79,16 @@ public class Reminders extends Fragment {
         LinearLayoutManager todayReminderLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         allReminderRecyclerView = remindersInflate.findViewById(R.id.reminders_recycler_view);
         ImageView allRemindersSearchBtn = remindersInflate.findViewById(R.id.allReminderSearchBtn);
-        EditText allRemindersSearch = remindersInflate.findViewById(R.id.allRemindersSearch);
+        allRemindersSearch = remindersInflate.findViewById(R.id.allRemindersSearch);
         allRemindersSearchBtn.setOnClickListener(v -> {
-            text = allRemindersSearch.getText().toString();
-            //Hide Keyboard
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(getView().getWindowToken(),0);
-            query = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE).child(uid).child("Reminders").orderByChild("title").startAt(text).endAt(text+"\uf8ff");
-            options = new FirebaseRecyclerOptions.Builder<RemindersModel>()
-                    .setQuery(query, RemindersModel.class)
-                    .build();
-            allreminderRecyclerviewAdapter = new ReminderRecyclerviewAdapter(options);
-            allreminderRecyclerviewAdapter.startListening();
-            allReminderRecyclerView.setAdapter(allreminderRecyclerviewAdapter);
-
+            search();
+        });
+        allRemindersSearch.setOnEditorActionListener((v, actionId, event) -> {
+            if(actionId== EditorInfo.IME_ACTION_SEARCH){
+                search();
+                return true;
+            }
+            return false;
         });
         query = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE).child(uid).child("Reminders").orderByChild("title");
         allReminderRecyclerView.setLayoutManager(todayReminderLayoutManager);
@@ -102,4 +99,18 @@ public class Reminders extends Fragment {
         allReminderRecyclerView.setAdapter(allreminderRecyclerviewAdapter);
         return remindersInflate;
     }
+
+    private void search() {
+        text = allRemindersSearch.getText().toString();
+        //Hide Keyboard
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(),0);
+        query = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE).child(uid).child("Reminders").orderByChild("title").startAt(text).endAt(text+"\uf8ff");
+        options = new FirebaseRecyclerOptions.Builder<RemindersModel>()
+                .setQuery(query, RemindersModel.class)
+                .build();
+        allreminderRecyclerviewAdapter = new ReminderRecyclerviewAdapter(options);
+        allreminderRecyclerviewAdapter.startListening();
+        allReminderRecyclerView.setAdapter(allreminderRecyclerviewAdapter);
     }
+}

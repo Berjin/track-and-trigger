@@ -52,16 +52,16 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
         }
         private void showPopupMenu(View view){
             PopupMenu popupMenu = new PopupMenu(view.getContext(),view);
-            popupMenu.inflate(R.menu.reminder_popup_menu);
+            popupMenu.inflate(R.menu.item_popup_menu);
             popupMenu.show();
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()){
-                    case R.id.popup_edit:
-                        //TODO reminder edit action
+                    case R.id.item_popup_edit:
+                        //TODO Item edit action
                         Toast.makeText(view.getContext(), "Edit", Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.popup_delete:
-                        //TODO reminder delete action
+                    case R.id.item_popup_delete:
+                        //TODO Item delete action
                         Toast.makeText(view.getContext(), "Delete", Toast.LENGTH_SHORT).show();
                         break;
                 }

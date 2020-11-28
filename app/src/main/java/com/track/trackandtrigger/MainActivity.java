@@ -29,13 +29,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.track.trackandtrigger.Modal.ItemsModel;
 import com.track.trackandtrigger.Modal.RemindersModel;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.lang.Integer.parseInt;
 
@@ -51,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private FirebaseDatabase database;
     private DatabaseReference userInfoRef;
+    private ArrayList<String> categoryTitles = new ArrayList<>();
+    private Set<String> categoryTitlesSet = new HashSet<>();
+    ValueEventListener listener;
+    DatabaseReference ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         fab.setOnClickListener(v -> {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         });
+        getCategoryTitles();
         add_item.setOnClickListener(v -> {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             AlertDialog.Builder builder = new AlertDialog.Builder(this,R.style.AddItemDialogTheme);
@@ -104,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 }
                 item_count.setText(""+count[0]);
             });
+
             String[] items = new String[]{
                     "Groceries",
                     "Meetings"
@@ -111,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             ArrayAdapter<String> adapter = new ArrayAdapter<>(
                     this,
                     R.layout.dropdown_profession,
-                    items
+                    getCategoryTitles()
             );
             add_category.setAdapter(adapter);
             Button btn_add_item = itemView.findViewById(R.id.btn_add_item);
@@ -224,6 +236,33 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         });
 
     }
+
+    private ArrayList<String> getCategoryTitles() {
+        ref = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE);
+        listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        snapshot.child("Items").getChildren().iterator().forEachRemaining(v -> categoryTitlesSet.add(v.getKey()));
+                        for (String i : categoryTitlesSet) {
+                            if (!categoryTitles.contains(i)) {
+                                categoryTitles.add(i);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        ref.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(listener);
+        return categoryTitles;
+    }
+
     Home homeFragment = new Home();
     Diary diaryFragment = new Diary();
     Reminders remindersFragment = new Reminders();
