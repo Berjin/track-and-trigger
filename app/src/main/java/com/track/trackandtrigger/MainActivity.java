@@ -237,6 +237,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+//    private void setLocale(String lang) {
+//            Locale myLocale = new Locale(lang);
+//            Resources resources = getResources();
+//            DisplayMetrics dm = resources.getDisplayMetrics();
+//            Configuration configuration = resources.getConfiguration();
+//            configuration.locale = myLocale;
+//            resources.updateConfiguration(configuration, dm);
+//            recreate();
+//    }
+
     private ArrayList<String> getCategoryTitles() {
         ref = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE);
         listener = new ValueEventListener() {

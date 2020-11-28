@@ -1,11 +1,17 @@
 package com.track.trackandtrigger;
 
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.widget.Toast;
 
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import java.util.Locale;
 
 import static com.track.trackandtrigger.SplashScreenActivity.applyTheme;
 
@@ -37,19 +43,19 @@ public class MainSettingsFragment extends PreferenceFragmentCompat implements Sh
         Preference pref = findPreference(key);
         if (pref instanceof ListPreference) {
             ListPreference listPreference = (ListPreference) pref;
-//            switch (listPreference.getValue()) {
-//                case "en":
-//                    setLocale("en");
-//                    break;
-//                case "ta":
-//                    setLocale("ta");
-//                    break;
-//                case "mal":
-//                    setLocale("ml");
-//                    break;
-//                default:
-//                    Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
-//            }
+            switch (listPreference.getValue()) {
+                case "en":
+                    setLocale("en");
+                    break;
+                case "ta":
+                    setLocale("ta");
+                    break;
+                case "mal":
+                    setLocale("ml");
+                    break;
+                default:
+                    Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
+            }
             pref.setSummaryProvider(preference -> {
                 switch (listPreference.getValue()) {
                        case "en":
@@ -64,13 +70,13 @@ public class MainSettingsFragment extends PreferenceFragmentCompat implements Sh
             });
         }
     }
-//    public void setLocale(String lang) {
-//        Locale myLocale = new Locale(lang);
-//        Resources resources = getResources();
-//        DisplayMetrics dm = resources.getDisplayMetrics();
-//        Configuration configuration = resources.getConfiguration();
-//        configuration.locale = myLocale;
-//        resources.updateConfiguration(configuration, dm);
-//        requireActivity().recreate();
-//    }
+    public void setLocale(String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources resources = getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = myLocale;
+        resources.updateConfiguration(configuration, dm);
+        requireActivity().recreate();
+    }
 }
