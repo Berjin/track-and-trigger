@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:theme="@style/MainTheme"
+    android:background="@color/mainBackground">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_share"
+            android:padding="5dp"
+            app:tint="@color/mainText" />
+
+        <ImageView
+            android:id="@+id/close_personal_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:src="@drawable/ic_close_black"
+            android:layout_gravity="end"
+            app:tint="@color/mainText" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainText"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:text="Item "/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:textColor="@color/mainText"
+                android:text="@string/name"/>
+            <TextView
+                android:id="@+id/name_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:textColor="@color/mainText"
+                android:textAlignment="center"
+                android:text=""/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:textColor="@color/mainText"
+                android:text="Quantity"/>
+            <TextView
+                android:id="@+id/username_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:textColor="@color/mainText"
+                android:text=""/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic__category"/>
+
+
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
