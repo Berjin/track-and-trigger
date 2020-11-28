@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel, ItemRecyclerviewAdapter.ViewHolder> {
 
     private ArrayList<String> ItemsArray = new ArrayList<>();
+    private ArrayList<String> ItemsCount = new ArrayList<>();
     public ItemRecyclerviewAdapter(@NonNull FirebaseRecyclerOptions<ItemsModel> options) {
         super(options);
     }
@@ -29,7 +30,9 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull ItemsModel model) {
         holder.textItem.setText(model.getTopic());
+        holder.item_count_text.setText(model.getItemCount());
         ItemsArray.add(model.getTopic());
+        ItemsCount.add(model.getItemCount());
     }
 
     @NonNull
@@ -41,13 +44,14 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView textItem;
+        TextView textItem,item_count_text;
         ImageView category_popup;
         CardView item_card_view;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textItem =itemView.findViewById(R.id.textItem);
+            item_count_text = itemView.findViewById(R.id.item_count_text);
             category_popup = itemView.findViewById(R.id.category_popup);
             item_card_view = itemView.findViewById(R.id.item_card_view);
             category_popup.setOnClickListener(this);
@@ -64,6 +68,7 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
                     int position = getAdapterPosition();
                     Intent intent = new Intent(v.getContext(),ItemActivity.class);
                     intent.putExtra("Topic",ItemsArray.get(position));
+                    intent.putExtra("count",ItemsCount.get(position));
                     v.getContext().startActivity(intent);
             }
         }
