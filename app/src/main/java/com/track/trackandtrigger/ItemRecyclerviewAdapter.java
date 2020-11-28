@@ -17,8 +17,11 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.track.trackandtrigger.Modal.ItemsModel;
 
+import java.util.ArrayList;
+
 public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel, ItemRecyclerviewAdapter.ViewHolder> {
 
+    private ArrayList<String> ItemsArray = new ArrayList<>();
     public ItemRecyclerviewAdapter(@NonNull FirebaseRecyclerOptions<ItemsModel> options) {
         super(options);
     }
@@ -26,7 +29,7 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull ItemsModel model) {
         holder.textItem.setText(model.getTopic());
-
+        ItemsArray.add(model.getTopic());
     }
 
     @NonNull
@@ -58,7 +61,10 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
                     showPopupMenu(v);
                     break;
                 case R.id.item_card_view:
-//                    Intent intent =
+                    int position = getAdapterPosition();
+                    Intent intent = new Intent(v.getContext(),ItemActivity.class);
+                    intent.putExtra("Topic",ItemsArray.get(position));
+                    v.getContext().startActivity(intent);
             }
         }
         private void showPopupMenu(View view){
