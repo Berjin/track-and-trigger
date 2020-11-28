@@ -6,4 +6,6 @@
         android:id="@+id/item_popup_edit" />
     <item android:title="Delete"
         android:id="@+id/item_popup_delete"/>
+    <item android:title="Share"
+        android:id="@+id/item_popup_share"/>
 </menu>

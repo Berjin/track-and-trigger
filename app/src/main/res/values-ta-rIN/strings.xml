@@ -61,4 +61,6 @@
     <string name="search">தேடு</string>
     <string name="categories">வகைகள்</string>
     <string name="upcoming_reminders">வரவிருக்கும் நினைவூட்டல்கள்</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 </resources>

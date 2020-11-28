@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     String topic = item_topic.getText().toString().trim();
                     model.topic = item_topic.getText().toString().trim();
                     model.itemCount = item_count.getText().toString().trim();
+                    model.category = category;
                     String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     userInfoRef.child(uid)
                             .child("Items")

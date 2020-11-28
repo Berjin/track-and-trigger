@@ -63,6 +63,8 @@
     <string name="search">Search</string>
     <string name="categories">Categories</string>
     <string name="upcoming_reminders">Upcoming Reminders</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
     <string-array name="language_entries">
         <item>English</item>
         <item>தமிழ்</item>

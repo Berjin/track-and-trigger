@@ -2,8 +2,10 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Edit"
+    <item android:title="@string/edit"
         android:id="@+id/popup_edit" />
-    <item android:title="Delete"
+    <item android:title="@string/delete"
         android:id="@+id/popup_delete"/>
+    <item android:title="@string/share"
+        android:id="@+id/popup_share"/>
 </menu>
