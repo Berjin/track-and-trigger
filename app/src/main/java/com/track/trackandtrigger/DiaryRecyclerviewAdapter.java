@@ -38,6 +38,11 @@ public class DiaryRecyclerviewAdapter extends FirestoreRecyclerAdapter<DiaryMode
         return new DiaryHolder(v);
 
     }
+    public void deleteItem(int position) {
+        getSnapshots().getSnapshot(position).getReference().delete();
+
+    }
+
 
     class DiaryHolder extends RecyclerView.ViewHolder{
 
@@ -48,6 +53,12 @@ public class DiaryRecyclerviewAdapter extends FirestoreRecyclerAdapter<DiaryMode
             super(itemView);
             textViewTitle=itemView.findViewById(R.id.diary_text);
             textViewDescription=itemView.findViewById(R.id.diary_content);
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+
+
+            });
+
 
         }
     }
