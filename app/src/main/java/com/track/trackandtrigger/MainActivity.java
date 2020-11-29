@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
                         calendar.set(Calendar.MINUTE,minute);
 
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm a");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
                         reminder_datetime.setText(simpleDateFormat.format(calendar.getTime()));
 
                         // Intent

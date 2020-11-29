@@ -61,7 +61,7 @@
             android:layout_height="match_parent"
             android:imeOptions="actionDone"
             android:layout_margin="10dp"
-            android:inputType="textMultiLine|text"
+            android:inputType="textMultiLine|text|textCapSentences"
             android:hint="@string/your_experience_today"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:padding="16dp">

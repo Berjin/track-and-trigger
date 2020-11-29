@@ -26,6 +26,7 @@ public class DiaryRecyclerviewAdapter extends FirestoreRecyclerAdapter<DiaryMode
     protected void onBindViewHolder(@NonNull DiaryHolder holder, int position, @NonNull DiaryModel model) {
         holder.textViewTitle.setText(model.getTitle());
         holder.textViewDescription.setText(model.getDescription());
+        holder.diary_time.setText(model.getDatetime());
 
     }
 
@@ -47,12 +48,13 @@ public class DiaryRecyclerviewAdapter extends FirestoreRecyclerAdapter<DiaryMode
     class DiaryHolder extends RecyclerView.ViewHolder{
 
         TextView textViewTitle;
-        TextView textViewDescription;
+        TextView textViewDescription,diary_time;
 
         public DiaryHolder(@NonNull View itemView) {
             super(itemView);
             textViewTitle=itemView.findViewById(R.id.diary_text);
             textViewDescription=itemView.findViewById(R.id.diary_content);
+            diary_time = itemView.findViewById(R.id.diary_time);
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
 
