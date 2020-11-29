@@ -4,9 +4,18 @@ public class ItemsModel {
     public String topic = "";
     public String itemCount ="";
     public String category="";
+    public String imageUrl="";
 
     public String getCategory() {
         return category;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public void setCategory(String category) {
@@ -16,10 +25,11 @@ public class ItemsModel {
     public ItemsModel() {
     }
 
-    public ItemsModel(String topic, String itemCount,String category) {
+    public ItemsModel(String topic, String itemCount,String category,String imageUrl) {
         this.topic = topic;
         this.itemCount = itemCount;
         this.category = category;
+        this.imageUrl = imageUrl;
     }
 
     public String getTopic() {

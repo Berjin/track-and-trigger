@@ -3,6 +3,7 @@ package com.track.trackandtrigger;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
     private ArrayList<String> ItemsArray = new ArrayList<>();
     private ArrayList<String> ItemsCount = new ArrayList<>();
     private String[] ItemsCategory = new String[100];
+    private String[] ImageUrls = new String[100];
     int position;
     DatabaseReference ref;
     public ItemRecyclerviewAdapter(@NonNull FirebaseRecyclerOptions<ItemsModel> options) {
@@ -48,6 +50,7 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
         ItemsArray.add(model.getTopic());
         ItemsCount.add(model.getItemCount());
         ItemsCategory[position]=model.getCategory();
+        ImageUrls[position]=model.getImageUrl();
     }
 
     @NonNull
@@ -85,6 +88,8 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
                     Intent intent = new Intent(v.getContext(),ItemActivity.class);
                     intent.putExtra("Topic",ItemsArray.get(position));
                     intent.putExtra("count",ItemsCount.get(position));
+                    intent.putExtra("category",ItemsCategory[position]);
+                    intent.putExtra("image_url",ImageUrls[position]);
                     v.getContext().startActivity(intent);
             }
         }
@@ -150,9 +155,14 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
                         break;
                     case R.id.item_popup_share:
                         position =getAdapterPosition();
-                        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                        sharingIntent.setType("text/plain");
+                        Uri imageUri;
+                        imageUri = Uri.parse(ImageUrls[position]);
+                        Intent sharingIntent = new Intent();
+                        sharingIntent.setAction(Intent.ACTION_SEND);
                         String shareBody = "I have "+ItemsCount.get(position)+" "+ItemsArray.get(position)+"/s/oes";
+                        sharingIntent.putExtra(Intent.EXTRA_TEXT,shareBody);
+                        sharingIntent.putExtra(Intent.EXTRA_STREAM,imageUri);
+                        sharingIntent.setType("image/*");
                         sharingIntent.putExtra(Intent.EXTRA_TEXT,shareBody);
                         view.getContext().startActivity(Intent.createChooser(sharingIntent,"Share via"));
                         break;
