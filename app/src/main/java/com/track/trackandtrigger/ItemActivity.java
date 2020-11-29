@@ -6,8 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
@@ -23,18 +27,67 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.track.trackandtrigger.Modal.ItemsModel;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class ItemActivity extends AppCompatActivity {
     TextView ItemNameText,ItemCountText,textItemName;
-    ImageView add_new_camera,itemImg;
+    ImageView add_new_camera,itemImg,item_share;
     StorageReference storageReference;
     Uri itemImgUri;
     String topic,count,category,imageUrl;
+    public Uri getLocalBitmapUri(Bitmap bmp) {
+        Uri bmpUri = null;
+        try {
+            File file =  new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), topic + System.currentTimeMillis() + ".png");
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
+            bmpUri = Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmpUri;
+    }
+    public void shareItem(String url) {
+        Picasso.get().load(url).into(new Target() {
+            @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                String shareBody = "I have "+count+" "+topic+"/s/oes";
+                if(imageUrl.equals("")){
+                    i.setType("text/plain");
+                    i.putExtra(Intent.EXTRA_TEXT,shareBody);
+                    startActivity(Intent.createChooser(i, "Share Via"));
+                }else{
+                    i.setType("image/*");
+                    i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap));
+                    i.putExtra(Intent.EXTRA_TEXT,shareBody);
+                    startActivity(Intent.createChooser(i, "Share Via"));
+                }
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override public void onPrepareLoad(Drawable placeHolderDrawable) { }
+        });
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
+        // android 7.0 system to solve the problem of taking pictures
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
+
         Intent intent =getIntent();
         topic = intent.getStringExtra("Topic");
         count = intent.getStringExtra("count");
@@ -46,6 +99,7 @@ public class ItemActivity extends AppCompatActivity {
         add_new_camera = findViewById(R.id.add_new_camera);
         textItemName =findViewById(R.id.textItemName);
         itemImg = findViewById(R.id.itemImg);
+        item_share = findViewById(R.id.item_share);
         if(!imageUrl.equals("")){
             Glide.with(this)
                     .load(imageUrl)
@@ -55,6 +109,10 @@ public class ItemActivity extends AppCompatActivity {
         ItemNameText.setText(topic);
         ItemCountText.setText(count);
         textItemName.setText(topic);
+        item_share.setOnClickListener(v->{
+            shareItem(imageUrl);
+        });
+
         add_new_camera.setOnClickListener(v->{
             Intent intent1 = new Intent();
             intent1.setType("image/'");

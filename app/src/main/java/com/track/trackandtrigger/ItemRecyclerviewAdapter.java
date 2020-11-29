@@ -3,7 +3,11 @@ package com.track.trackandtrigger;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Environment;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +29,13 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.track.trackandtrigger.Modal.ItemsModel;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
@@ -154,21 +163,60 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
 //                        ref = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE);
                         break;
                     case R.id.item_popup_share:
-                        position =getAdapterPosition();
-                        Uri imageUri;
-                        imageUri = Uri.parse(ImageUrls[position]);
-                        Intent sharingIntent = new Intent();
-                        sharingIntent.setAction(Intent.ACTION_SEND);
-                        String shareBody = "I have "+ItemsCount.get(position)+" "+ItemsArray.get(position)+"/s/oes";
-                        sharingIntent.putExtra(Intent.EXTRA_TEXT,shareBody);
-                        sharingIntent.putExtra(Intent.EXTRA_STREAM,imageUri);
-                        sharingIntent.setType("image/*");
-                        sharingIntent.putExtra(Intent.EXTRA_TEXT,shareBody);
-                        view.getContext().startActivity(Intent.createChooser(sharingIntent,"Share via"));
+                        // android 7.0 system to solve the problem of taking pictures
+                        StrictMode.VmPolicy.Builder builder1 = new StrictMode.VmPolicy.Builder();
+                        StrictMode.setVmPolicy(builder1.build());
+                        builder1.detectFileUriExposure();
+                        shareItem(ImageUrls[position]);
                         break;
                 }
                 return false;
             });
+        }
+        public Uri getLocalBitmapUri(Bitmap bmp) {
+            Uri bmpUri = null;
+            try {
+                File file =  new File(itemView.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), ItemsArray.get(position) + System.currentTimeMillis() + ".png");
+                FileOutputStream out = new FileOutputStream(file);
+                bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+                out.close();
+                bmpUri = Uri.fromFile(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return bmpUri;
+        }
+        public void shareItem(String url) {
+            if(!url.equals("")) {
+                Picasso.get().load(url).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        String shareBody = "I have " + ItemsCount.get(position) + " " + ItemsArray.get(position) + "/s/oes";
+                        i.setType("image/*");
+                        i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap));
+                        i.putExtra(Intent.EXTRA_TEXT, shareBody);
+                        itemView.getContext().startActivity(Intent.createChooser(i, "Share Via"));
+
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    }
+                });
+            }else{
+                Intent i = new Intent(Intent.ACTION_SEND);
+                String shareBody = "I have " + ItemsCount.get(position) + " " + ItemsArray.get(position) + "/s/oes";
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_TEXT, shareBody);
+                itemView.getContext().startActivity(Intent.createChooser(i, "Share Via"));
+
+            }
         }
     }
 }
