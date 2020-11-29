@@ -1,5 +1,6 @@
 package com.track.trackandtrigger;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
@@ -60,6 +62,11 @@ public class Diary extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
          diaryinflator= inflater.inflate(R.layout.fragment_diary, container, false);
+        ImageView add_btn_diary = diaryinflator.findViewById(R.id.add_btn_diary);
+        add_btn_diary.setOnClickListener(v->{
+            Intent intent = new Intent(getContext(),AddDiaryActivity.class);
+            startActivity(intent);
+        });
         setUpRecyclerView();
 
         return diaryinflator;

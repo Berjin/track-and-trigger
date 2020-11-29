@@ -11,11 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.track.trackandtrigger.Modal.DiaryModel;
 
 
-public class DiaryRecyclerviewAdapter extends FirebaseRecyclerAdapter<DiaryModel,DiaryRecyclerviewAdapter.DiaryHolder> {
+public class DiaryRecyclerviewAdapter extends FirestoreRecyclerAdapter<DiaryModel,DiaryRecyclerviewAdapter.DiaryHolder> {
 
     public DiaryRecyclerviewAdapter(@NonNull FirestoreRecyclerOptions<DiaryModel> options) {
         super(options);
