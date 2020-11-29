@@ -64,4 +64,8 @@
     <string name="upcoming_reminders">Upcoming Reminders</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="add_diary">Add diary</string>
+    <string name="add_date">Add date</string>
+    <string name="your_experience_today">Your experience today</string>
+    <string name="add_title">Add Title</string>
 </resources>

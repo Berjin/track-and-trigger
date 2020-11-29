@@ -76,7 +76,7 @@
             android:padding="10dp"
             android:textColor="@color/mainText"
             android:textAlignment="center"
-            android:text="Tomato"/>
+            android:text="Potato"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/quantity_layout"
@@ -114,7 +114,7 @@
     <LinearLayout
         android:id="@+id/image_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/quantity_layout"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
@@ -126,7 +126,9 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/potato"/>
+            android:src="@drawable/potato"
+            android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="10dp"/>/>
 
     </LinearLayout>
 

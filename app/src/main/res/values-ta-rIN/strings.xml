@@ -61,6 +61,10 @@
     <string name="search">தேடு</string>
     <string name="categories">வகைகள்</string>
     <string name="upcoming_reminders">வரவிருக்கும் நினைவூட்டல்கள்</string>
+    <string name="add_diary">Add diary</string>
+    <string name="add_date">Add date</string>
+    <string name="your_experience_today">Your experience today</string>
+    <string name="add_title">Add Title</string>
     <string name="edit">தொகு</string>
     <string name="delete">அழி</string>
 </resources>
