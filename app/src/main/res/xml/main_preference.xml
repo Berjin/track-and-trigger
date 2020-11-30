@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceCategory
+    android:title="@string/notifications">
+    <CheckBoxPreference
+        android:key="send_sms"
+        app:defaultValue="true"
+        android:summaryOn="@string/sms_notification_enabled"
+        android:summaryOff="@string/sms_notifications_disabled"
+        app:icon="@drawable/ic_sms"
+        app:title="@string/send_via_sms"/>
+    <CheckBoxPreference
+        android:key="send_email"
+        app:defaultValue="true"
+        android:summaryOn="@string/email_notification_enabled"
+        android:summaryOff="@string/email_notification_disabled"
+        app:icon="@drawable/ic_email"
+        app:title="@string/send_via_email"/>
+    <CheckBoxPreference
+        android:key="simple_notification"
+        android:summaryOn="@string/simple_notification_enabled"
+        android:summaryOff="@string/simple_notification_disabled"
+        app:defaultValue="true"
+        app:icon="@drawable/ic_simple_notification"
+        app:title="@string/simple_notification"/>
+</PreferenceCategory>
+<PreferenceCategory
+    android:title="@string/general">
+    <SwitchPreferenceCompat
+        android:key="dark_light"
+        android:title="@string/dark_theme"
+        android:summaryOn="@string/dark_mode_active"
+        android:summaryOff="@string/light_mode_active"/>
+    <ListPreference
+        android:key="language_select"
+        android:defaultValue="1"
+        android:entries="@array/language_entries"
+        android:entryValues="@array/entry_values"
+        android:title="@string/language"
+        android:summary="English"
+        android:icon="@drawable/ic_language"
+        android:dialogTitle="@string/language"
+        app:useSimpleSummaryProvider="true"
+        app:defaultValue="en"/>
+</PreferenceCategory>
+</PreferenceScreen>

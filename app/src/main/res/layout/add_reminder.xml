@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:theme="@style/AddItemDialogTheme"
+    android:layout_gravity="center"
+    android:background="@color/mainBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:id="@+id/reminders_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/mainText"
+            android:textSize="22sp"
+            android:layout_marginBottom="16dp"
+            android:layout_gravity="center_horizontal"
+            android:textStyle="bold"
+            android:text="@string/add_reminder" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/reminder_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:startIconTintMode="multiply">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/reminder_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:inputType="text|textCapSentences"
+                android:hint="@string/reminder_title"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/reminder_datetime_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/reminder_datetime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:maxLines="1"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/date_amp_time_optional"
+                    android:focusable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reminders_linear_layout"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_add_reminder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:layout_margin="16dp"
+            android:textColor="@color/colorWhite"
+            android:background="@color/colorPrimary"
+            android:layout_weight="1"
+            android:text="@string/add_reminder"/>
+    </LinearLayout>
+</RelativeLayout>
