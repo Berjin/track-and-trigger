@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -19,14 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.track.trackandtrigger.Modal.RemindersModel;
-
-import java.util.ArrayList;
 
 
 public class ReminderRecyclerviewAdapter extends FirebaseRecyclerAdapter<RemindersModel, ReminderRecyclerviewAdapter.ViewHolder> {
     private String[] ReminderTitles = new String[100];
     private String[] ReminderTimes = new String[100];
+    private int[] ReminderIds = new int[100];
+    int position;
+    DatabaseReference ref;
 
     public ReminderRecyclerviewAdapter(@NonNull FirebaseRecyclerOptions<RemindersModel> options) {
         super(options);
@@ -46,10 +50,11 @@ public class ReminderRecyclerviewAdapter extends FirebaseRecyclerAdapter<Reminde
         holder.reminder_time.setText(model.getDatetime());
         ReminderTitles[position] = model.getTitle();
         ReminderTimes[position] = model.getDatetime();
+        ReminderIds[position] = model.getReminder_id();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        CheckBox reminder_text;
+        TextView reminder_text;
         TextView reminder_time;
         ImageView reminder_popup;
 
@@ -76,7 +81,19 @@ public class ReminderRecyclerviewAdapter extends FirebaseRecyclerAdapter<Reminde
                         Toast.makeText(view.getContext(), "Edit", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.popup_delete:
-                        //TODO reminder delete action
+                        position =getAdapterPosition();
+                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        ref = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE);
+                        ref.child(uid).child("Reminders").child(ReminderTitles[position]).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                AlarmManager alarmManager = (AlarmManager)view.getContext().getSystemService(Context.ALARM_SERVICE);
+                                Intent alarmCancelIntent = new Intent(view.getContext().getApplicationContext(),AlarmReceiver.class);
+                                PendingIntent pendingIntent = PendingIntent.getBroadcast(view.getContext().getApplicationContext(),ReminderIds[position],alarmCancelIntent,PendingIntent.FLAG_CANCEL_CURRENT);
+                                Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
+                                alarmManager.cancel(pendingIntent);
+                            }
+                        });
                         Toast.makeText(view.getContext(), "Delete", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.popup_share:

@@ -14,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirestoreRegistrar;
@@ -75,17 +77,20 @@ public class Diary extends Fragment {
     }
 
     private void setUpRecyclerView() {
-        Query query=notebookRef.orderBy("datetime",Query.Direction.DESCENDING);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        LinearLayoutManager linearLayoutManager =new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
+        RecyclerView recyclerView=diaryinflator.findViewById(R.id.diary_recycler_view);
+        Query query=notebookRef.document(uid).collection("diary").orderBy("datetime",Query.Direction.DESCENDING);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         FirestoreRecyclerOptions<DiaryModel> options=new FirestoreRecyclerOptions.Builder<DiaryModel>()
                 .setQuery(query, DiaryModel.class)
                 .build();
         adapter=new DiaryRecyclerviewAdapter(options);
 
-        RecyclerView recyclerView=diaryinflator.findViewById(R.id.diary_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
             ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT){
@@ -97,7 +102,7 @@ public class Diary extends Fragment {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 adapter.deleteItem(viewHolder.getAdapterPosition());
-
+                Toast.makeText(getContext(), "Diary entry deleted", Toast.LENGTH_SHORT).show();
             }
 
         }).attachToRecyclerView(recyclerView);

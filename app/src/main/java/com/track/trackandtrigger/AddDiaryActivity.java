@@ -55,7 +55,7 @@ public class AddDiaryActivity extends AppCompatActivity {
         String datetime = "29/11/2020";
         CollectionReference notebookRef = FirebaseFirestore.getInstance()
                 .collection("Notebook");
-        notebookRef.add(new DiaryModel(title, description, datetime));
+        notebookRef.document(uid).collection("diary").add(new DiaryModel(title, description, datetime));
         Toast.makeText(this, "Diary entry added", Toast.LENGTH_SHORT).show();
         finish();
     }

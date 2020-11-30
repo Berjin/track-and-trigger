@@ -18,13 +18,14 @@
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-            <CheckBox
+            <TextView
             android:id="@+id/reminder_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
             android:padding="5dp"
+            android:textColor="@color/mainText"
             android:text="Reminder title"/>
             <TextView
             android:id="@+id/reminder_time"
@@ -33,7 +34,7 @@
             android:layout_marginStart="35dp"
             android:layout_marginBottom="5dp"
             android:textColor="@color/mainText"
-            android:text="12:40 am" />
+            android:text="" />
             </LinearLayout>
             <ImageView
                 android:id="@+id/reminder_popup"

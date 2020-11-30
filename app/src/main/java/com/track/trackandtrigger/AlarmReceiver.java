@@ -16,6 +16,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -32,7 +34,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     String email;
     GMailSender sender;
     String message;
-    String phone;
+    String phone,reminderTitle;
+    int notificationId;
+    DatabaseReference ref;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -43,8 +47,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         phone =user.getPhoneNumber();
 
 
-        int notificationId = intent.getIntExtra("notificationId", 0);
+         notificationId = intent.getIntExtra("notificationId", 0);
          message = intent.getStringExtra("message");
+         reminderTitle =intent.getStringExtra("reminderTitle");
 
 
 
@@ -77,40 +82,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         // Notify
         notificationManager.notify(notificationId, builder.build());
 
-
-
-
-
-
         sendEmail(email,message);
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 
@@ -127,14 +99,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     class MyAsyncClass extends AsyncTask<Void, Void, Void> {
 
-        ProgressDialog pDialog;
 
         @Override
         protected void onPreExecute() {
-
             super.onPreExecute();
-
-
         }
 
         @Override
@@ -156,11 +124,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         protected void onPostExecute(Void result) {
 
             super.onPostExecute(result);
-            pDialog.cancel();
-
-
-
-
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            ref = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE);
+            ref.child(uid).child("Reminders").child(reminderTitle).removeValue();
         }
     }
 

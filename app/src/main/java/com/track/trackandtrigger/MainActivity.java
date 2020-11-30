@@ -220,7 +220,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
                           intent.putExtra("notificationId", rno);
                           String userDisplayName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-                         intent.putExtra("message","Dear "+userDisplayName+",\n\n"+"You have a reminder scheduled now.\n"+"Title: "+reminder_title.getText().toString().trim());
+                          intent.putExtra("reminderTitle",reminder_title.getText().toString().trim());
+                            intent.putExtra("message","Dear "+userDisplayName+",\n\n"+"You have a reminder scheduled now.\n"+"Title: "+reminder_title.getText().toString().trim());
 
                         // PendingIntent
                          pendingIntent = PendingIntent.getBroadcast(

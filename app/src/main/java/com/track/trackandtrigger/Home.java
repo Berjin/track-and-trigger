@@ -134,6 +134,7 @@ public class Home extends Fragment {
         categoryRecyclerView.setLayoutManager(linearLayoutManager);
         adapter = new CategoryRecyclerviewAdapter(getContext(), categoryTitles);
         categoryRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();

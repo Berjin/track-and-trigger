@@ -158,9 +158,11 @@ public class ItemRecyclerviewAdapter extends FirebaseRecyclerAdapter<ItemsModel,
                         });
                         break;
                     case R.id.item_popup_delete:
-//                        position =getAdapterPosition();
-//                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//                        ref = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE);
+                        position =getAdapterPosition();
+                        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        ref = FirebaseDatabase.getInstance().getReference(Common.USER_INFO_REFERENCE);
+                        ref.child(uid).child("Items").child(ItemsCategory[position]).child(ItemsArray.get(position)).removeValue();
+                        Toast.makeText(view.getContext(), "deleted", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.item_popup_share:
                         // android 7.0 system to solve the problem of taking pictures
