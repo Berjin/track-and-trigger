@@ -55,29 +55,36 @@ public class ItemActivity extends AppCompatActivity {
         return bmpUri;
     }
     public void shareItem(String url) {
-        Picasso.get().load(url).into(new Target() {
-            @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                Intent i = new Intent(Intent.ACTION_SEND);
-                String shareBody = "I have "+count+" "+topic+"/s/oes";
-                if(imageUrl.equals("")){
-                    i.setType("text/plain");
-                    i.putExtra(Intent.EXTRA_TEXT,shareBody);
-                    startActivity(Intent.createChooser(i, "Share Via"));
-                }else{
+        if(!url.equals("")) {
+            Picasso.get().load(url).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    String shareBody = "I have " + count + " " + topic + "/s/oes";
                     i.setType("image/*");
                     i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap));
-                    i.putExtra(Intent.EXTRA_TEXT,shareBody);
+                    i.putExtra(Intent.EXTRA_TEXT, shareBody);
                     startActivity(Intent.createChooser(i, "Share Via"));
+
                 }
-            }
 
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                @Override
+                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
 
-            }
+                }
 
-            @Override public void onPrepareLoad(Drawable placeHolderDrawable) { }
-        });
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
+                }
+            });
+        }else{
+            Intent i = new Intent(Intent.ACTION_SEND);
+            String shareBody = "I have " + count + " " + topic + "/s/oes";
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(i, "Share Via"));
+
+        }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
